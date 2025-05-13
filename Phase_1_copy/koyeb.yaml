@@ -1,0 +1,38 @@
+name: dbleadgen-app
+services:
+  - name: dbleadgen
+    image: ukantjadia/dbleadgen:latest
+    auto_deploy: true
+    ports:
+      - port: 8000
+        protocol: http
+    env:
+      - key: FLASK_APP
+        value: backend/input_form.py
+      - key: FLASK_ENV
+        value: production
+      - key: SQLALCHEMY_DATABASE_URI
+        secret: true
+      - key: POSTGRES_HOST
+        secret: true
+      - key: POSTGRES_PORT
+        value: "17588"
+      - key: GUNICORN_CMD_ARGS
+        value: "--workers=2 --bind=0.0.0.0:8000 --timeout=120"
+    scaling:
+      min: 1
+      max: 1
+    regions:
+      - fra
+    health_checks:
+      http:
+        path: /
+        port: 8000
+        interval: 30s
+        timeout: 5s
+        initial_delay: 10s
+        success_threshold: 1
+        failure_threshold: 3
+    resources:
+      cpu: 500m
+      memory: 512Mi 

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Lead</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4cc9f0;
+        --success-color: #4ad66d;
+        --danger-color: #f72585;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+        font-size: 14px;
+      }
+      
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: white;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+      
+      .container:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        position: relative;
+        padding-bottom: 15px;
+      }
+      
+      h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--accent-color);
+        border-radius: 2px;
+      }
+      
+      .form-row {
+        display: flex;
+        margin-bottom: 20px;
+        gap: 20px;
+      }
+      
+      .form-group {
+        flex: 1;
+      }
+      
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+      }
+      
+      input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+      }
+      
+      input:focus, select:focus, textarea:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+        outline: none;
+        background-color: white;
+      }
+      
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .btn:active {
+        transform: translateY(0);
+      }
+      
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+      }
+      
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+      
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+      
+      .alert {
+        padding: 15px;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        border-left: 4px solid;
+        animation: fadeInDown 0.5s;
+      }
+      
+      .alert-success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border-color: #43a047;
+      }
+      
+      .alert-danger {
+        background-color: #ffebee;
+        color: #c62828;
+        border-color: #e53935;
+      }
+      
+      .dynamic-field {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: flex-end;
+        animation: fadeIn 0.5s ease-out;
+      }
+      
+      .dynamic-field select, .dynamic-field input, .dynamic-field textarea {
+        flex: 1;
+        margin-bottom: 0;
+      }
+      
+      .section-title {
+        font-weight: bold;
+        margin: 25px 0 15px 0;
+        color: var(--primary-color);
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .section-title::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      
+      .add-field-btn {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 15px;
+        width: 100%;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .add-field-btn:hover {
+        background-color: #3aa8d8;
+      }
+      
+      .remove-btn {
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .remove-btn:hover {
+        background-color: #e5177a;
+      }
+      
+      .existing-field {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: center;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .existing-field:hover {
+        background-color: #f0f0f0;
+      }
+      
+      .field-error {
+        border: 2px solid var(--danger-color) !important;
+        animation: shake 0.5s;
+      }
+      
+      .error-message {
+        color: var(--danger-color);
+        font-size: 13px;
+        margin-top: 8px;
+        display: none;
+        font-weight: 500;
+      }
+      
+      /* Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+      }
+      
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      
+      .pulse-animation {
+        animation: pulse 2s infinite;
+      }
+      
+      /* Tooltip for info */
+      .info-tooltip {
+        position: relative;
+        display: inline-block;
+        margin-left: 8px;
+        cursor: pointer;
+      }
+      
+      .info-tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background-color: var(--dark-color);
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 13px;
+        font-weight: normal;
+      }
+      
+      .info-tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .form-row {
+          flex-direction: column;
+          gap: 15px;
+        }
+        
+        .container {
+          padding: 20px;
+        }
+        
+        .btn {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h2>Edit Lead</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} animate__animated animate__fadeInDown">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="{{ url_for('lead.edit_lead', lead_id=lead.id) }}" id="editLeadForm">
+            <div class="section-title">Basic Information</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ lead.first_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ lead.last_name }}" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ lead.email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" value="{{ lead.phone }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" value="{{ lead.company }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="business_type">Business Type</label>
+                    <select id="business_type" name="business_type">
+                        <option value="" {% if not lead.business_type %}selected{% endif %}>Select Type</option>
+                        <option value="B2B" {% if lead.business_type == 'B2B' %}selected{% endif %}>B2B</option>
+                        <option value="B2C" {% if lead.business_type == 'B2C' %}selected{% endif %}>B2C</option>
+                        <option value="B2B2C" {% if lead.business_type == 'B2B2C' %}selected{% endif %}>B2B2C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="new" {% if lead.status == 'new' %}selected{% endif %}>New</option>
+                        <option value="contacted" {% if lead.status == 'contacted' %}selected{% endif %}>Contacted</option>
+                        <option value="closed" {% if lead.status == 'closed' %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="section-title">
+              Existing Additional Fields
+              <div class="info-tooltip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span class="tooltip-text">Edit or remove existing fields. Deleted fields will be removed when you save.</span>
+              </div>
+            </div>
+            <div id="existing-fields">
+                {% if lead.title %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Title:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.title }}" placeholder="Ex: CEO, CTO, Marketing Director" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="title">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.website %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Website:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.website }}" placeholder="Ex: https://company.com" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="website">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.city %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>City:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.city }}" placeholder="Ex: San Francisco" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="city">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.state %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>State:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.state }}" placeholder="Ex: California" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="state">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.industry %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Industry:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.industry }}" placeholder="Ex: Technology, Healthcare, Finance" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="industry">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.linkedin_url %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>LinkedIn URL:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.linkedin_url }}" placeholder="Ex: https://linkedin.com/company/name" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="linkedin_url">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.revenue %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Revenue:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.revenue }}" placeholder="Ex: $1M-$5M" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="revenue">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.product_service_category %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Product/Service Category:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.product_service_category }}" placeholder="Ex: SaaS, Consulting, Manufacturing" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="product_service_category">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.associated_members %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Associated Members:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.associated_members }}" placeholder="Ex: John Doe, Jane Smith" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="associated_members">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.employees_range %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Employees Range:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.employees_range }}" placeholder="Ex: 10-50, 50-200, 200-500" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="employees_range">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.rev_source %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Revenue Source:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.rev_source }}" placeholder="Ex: Subscriptions, Product Sales" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="rev_source">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.year_founded %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Year Founded:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.year_founded }}" placeholder="Ex: 2015" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="year_founded">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.owner_linkedin %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Owner LinkedIn:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.owner_linkedin }}" placeholder="Ex: https://linkedin.com/in/ownername" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="owner_linkedin">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.owner_age %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Owner Age:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.owner_age }}" placeholder="Ex: 35-45" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="owner_age">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.score %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Score:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.score }}" placeholder="Ex: A, B, C or numerical rating" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="score">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.reasoning %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Reasoning:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Explanation for the score or rating" required>{{ lead.reasoning }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="reasoning">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.additional_notes %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Notes:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Add any additional information here" required>{{ lead.additional_notes }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="additional_notes">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.email_customization_1 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Email Customization 1:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Personalized email content for first outreach" required>{{ lead.email_customization_1 }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="email_customization_1">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.subject_line_1 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Subject Line 1:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.subject_line_1 }}" placeholder="Ex: Partnership Opportunity with [Company]" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="subject_line_1">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.email_customization_2 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Email Customization 2:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Personalized email content for follow-up" required>{{ lead.email_customization_2 }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="email_customization_2">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.subject_line_2 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>Subject Line 2:</label>
+                    <input type="text" name="dynamic_field_value[]" value="{{ lead.subject_line_2 }}" placeholder="Ex: Following up on our previous conversation" required>
+                    <input type="hidden" name="dynamic_field_name[]" value="subject_line_2">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.linkedin_customization_1 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>LinkedIn Message 1:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Personalized LinkedIn message for first contact" required>{{ lead.linkedin_customization_1 }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="linkedin_customization_1">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+                
+                {% if lead.linkedin_customization_2 %}
+                <div class="existing-field animate__animated animate__fadeIn">
+                    <label>LinkedIn Message 2:</label>
+                    <textarea name="dynamic_field_value[]" placeholder="Personalized LinkedIn message for follow-up" required>{{ lead.linkedin_customization_2 }}</textarea>
+                    <input type="hidden" name="dynamic_field_name[]" value="linkedin_customization_2">
+                    <button type="button" class="remove-btn" onclick="removeExistingField(this)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="section-title">
+              Add New Fields
+              <div class="info-tooltip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span class="tooltip-text">Add new custom fields to this lead record</span>
+              </div>
+            </div>
+            <div id="dynamic-fields-container">
+                <!-- New dynamic fields will be added here -->
+            </div>
+            <button type="button" id="add-field-btn" class="add-field-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Custom Field
+            </button>
+            <div class="error-message" id="dynamic-fields-error">Please fill in all added fields or remove empty ones</div>
+            
+            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                <button type="submit" class="btn btn-primary pulse-animation">Update Lead</button>
+                <a href="{{ url_for('lead.view_leads') }}" class="btn btn-secondary animate__animated animate__fadeInRight">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addFieldBtn = document.getElementById('add-field-btn');
+            const dynamicFieldsContainer = document.getElementById('dynamic-fields-container');
+            const editLeadForm = document.getElementById('editLeadForm');
+            const dynamicFieldsError = document.getElementById('dynamic-fields-error');
+            
+            // Available database fields with placeholder values
+            const availableFields = [
+                {name: 'title', label: 'Title', placeholder: 'Ex: CEO, CTO, Marketing Director'},
+                {name: 'city', label: 'City', placeholder: 'Ex: San Francisco'},
+                {name: 'state', label: 'State', placeholder: 'Ex: California'},
+                {name: 'website', label: 'Website', placeholder: 'Ex: https://company.com'},
+                {name: 'industry', label: 'Industry', placeholder: 'Ex: Technology, Healthcare, Finance'},
+                {name: 'linkedin_url', label: 'LinkedIn URL', placeholder: 'Ex: https://linkedin.com/company/name'},
+                {name: 'revenue', label: 'Revenue', placeholder: 'Ex: $1M-$5M'},
+                {name: 'product_service_category', label: 'Product/Service Category', placeholder: 'Ex: SaaS, Consulting, Manufacturing'},
+                {name: 'associated_members', label: 'Associated Members', placeholder: 'Ex: John Doe, Jane Smith'},
+                {name: 'employees_range', label: 'Employees Range', placeholder: 'Ex: 10-50, 50-200, 200-500'},
+                {name: 'rev_source', label: 'Revenue Source', placeholder: 'Ex: Subscriptions, Product Sales'},
+                {name: 'year_founded', label: 'Year Founded', placeholder: 'Ex: 2015'},
+                {name: 'owner_linkedin', label: 'Owner LinkedIn', placeholder: 'Ex: https://linkedin.com/in/ownername'},
+                {name: 'owner_age', label: 'Owner Age', placeholder: 'Ex: 35-45'},
+                {name: 'additional_notes', label: 'Notes', placeholder: 'Add any additional information here'},
+                {name: 'score', label: 'Score', placeholder: 'Ex: A, B, C or numerical rating'},
+                {name: 'reasoning', label: 'Reasoning', placeholder: 'Explanation for the score or rating'},
+                {name: 'email_customization_1', label: 'Email Customization 1', placeholder: 'Personalized email content for first outreach'},
+                {name: 'subject_line_1', label: 'Subject Line 1', placeholder: 'Ex: Partnership Opportunity with [Company]'},
+                {name: 'email_customization_2', label: 'Email Customization 2', placeholder: 'Personalized email content for follow-up'},
+                {name: 'subject_line_2', label: 'Subject Line 2', placeholder: 'Ex: Following up on our previous conversation'},
+                {name: 'linkedin_customization_1', label: 'LinkedIn Message 1', placeholder: 'Personalized LinkedIn message for first contact'},
+                {name: 'linkedin_customization_2', label: 'LinkedIn Message 2', placeholder: 'Personalized LinkedIn message for follow-up'}
+            ];
+            
+            // Function to remove existing field
+            window.removeExistingField = function(button) {
+                const fieldDiv = button.parentElement;
+                const fieldName = fieldDiv.querySelector('input[type="hidden"]').value;
+                
+                // Create a hidden input to mark this field for deletion
+                const deleteMarker = document.createElement('input');
+                deleteMarker.type = 'hidden';
+                deleteMarker.name = 'delete_fields[]';
+                deleteMarker.value = fieldName;
+                document.getElementById('editLeadForm').appendChild(deleteMarker);
+                
+                // Add animation before removal
+                fieldDiv.classList.add('animate__animated', 'animate__fadeOut');
+                setTimeout(() => {
+                    fieldDiv.remove();
+                    // Update available options after removing a field
+                    updateAvailableOptions();
+                }, 300);
+            };
+            
+            // Form validation function
+            editLeadForm.addEventListener('submit', function(e) {
+                let isValid = true;
+                const dynamicSelects = document.querySelectorAll('#dynamic-fields-container select');
+                const dynamicInputs = document.querySelectorAll('#dynamic-fields-container input, #dynamic-fields-container textarea');
+                
+                // Reset validation styles
+                dynamicSelects.forEach(select => {
+                    select.classList.remove('field-error');
+                });
+                
+                dynamicInputs.forEach(input => {
+                    input.classList.remove('field-error');
+                });
+                
+                dynamicFieldsError.style.display = 'none';
+                
+                // If there are dynamic fields, validate them
+                if (dynamicSelects.length > 0) {
+                    dynamicSelects.forEach((select, index) => {
+                        if (!select.value) {
+                            select.classList.add('field-error');
+                            isValid = false;
+                        }
+                        
+                        // Check corresponding input/textarea
+                        if (index < dynamicInputs.length && !dynamicInputs[index].value) {
+                            dynamicInputs[index].classList.add('field-error');
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        dynamicFieldsError.style.display = 'block';
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Function to create a new field row
+            function addNewField() {
+                const fieldContainer = document.createElement('div');
+                fieldContainer.className = 'dynamic-field';
+                
+                // Create select for field type
+                const fieldSelect = document.createElement('select');
+                fieldSelect.name = 'dynamic_field_name[]';
+                fieldSelect.required = true;
+                
+                // Add options from available fields
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.text = 'Select Field';
+                defaultOption.selected = true;
+                defaultOption.disabled = true;
+                fieldSelect.appendChild(defaultOption);
+                
+                // Get all currently used fields - from both existing and new dynamic fields
+                const existingFields = Array.from(document.querySelectorAll('#existing-fields input[type="hidden"][name="dynamic_field_name[]"]'))
+                    .map(input => input.value);
+                const dynamicFields = Array.from(document.querySelectorAll('#dynamic-fields-container select[name="dynamic_field_name[]"]'))
+                    .map(select => select.value);
+                const usedFields = [...existingFields, ...dynamicFields].filter(f => f); // Remove empty values
+                
+                availableFields.forEach(field => {
+                    // Skip if this field is already used in existing or dynamic fields
+                    if (usedFields.includes(field.name)) return;
+                    
+                    const option = document.createElement('option');
+                    option.value = field.name;
+                    option.text = field.label;
+                    option.dataset.placeholder = field.placeholder;
+                    fieldSelect.appendChild(option);
+                });
+                
+                // Create input for field value
+                let fieldInput = document.createElement('input');
+                fieldInput.type = 'text';
+                fieldInput.name = 'dynamic_field_value[]';
+                fieldInput.placeholder = 'Select a field type first';
+                fieldInput.required = true;
+                
+                // Update placeholder when field type changes
+                fieldSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    if (selectedOption.dataset.placeholder) {
+                        fieldInput.placeholder = selectedOption.dataset.placeholder;
+                    } else {
+                        fieldInput.placeholder = 'Enter value';
+                    }
+                    
+                    // Change to textarea for longer text fields
+                    if (['additional_notes', 'reasoning', 'email_customization_1', 'email_customization_2', 
+                         'linkedin_customization_1', 'linkedin_customization_2'].includes(this.value)) {
+                        const textarea = document.createElement('textarea');
+                        textarea.name = fieldInput.name;
+                        textarea.placeholder = fieldInput.placeholder;
+                        textarea.required = true;
+                        fieldInput.parentNode.replaceChild(textarea, fieldInput);
+                        fieldInput = textarea;
+                    } else if (fieldInput.tagName === 'TEXTAREA') {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = fieldInput.name;
+                        input.placeholder = fieldInput.placeholder;
+                        input.required = true;
+                        fieldInput.parentNode.replaceChild(input, fieldInput);
+                        fieldInput = input;
+                    }
+                    
+                    // Update available options in other select dropdowns
+                    updateAvailableOptions();
+                });
+                
+                // Create remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                removeBtn.className = 'remove-btn';
+                removeBtn.title = 'Remove field';
+                removeBtn.addEventListener('click', function() {
+                    fieldContainer.classList.add('animate__animated', 'animate__fadeOut');
+                    setTimeout(() => {
+                        dynamicFieldsContainer.removeChild(fieldContainer);
+                        // Update available options after removing a field
+                        updateAvailableOptions();
+                    }, 300);
+                });
+                
+                // Add all elements to the container
+                fieldContainer.appendChild(fieldSelect);
+                fieldContainer.appendChild(fieldInput);
+                fieldContainer.appendChild(removeBtn);
+                
+                // Add the container to the form
+                dynamicFieldsContainer.appendChild(fieldContainer);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    fieldContainer.classList.add('animate__animated', 'animate__fadeIn');
+                }, 10);
+            }
+            
+            // Function to update available options in all select dropdowns
+            function updateAvailableOptions() {
+                const existingFields = Array.from(document.querySelectorAll('#existing-fields input[type="hidden"][name="dynamic_field_name[]"]'))
+                    .map(input => input.value);
+                const selects = document.querySelectorAll('#dynamic-fields-container select[name="dynamic_field_name[]"]');
+                
+                // Get all currently selected values from dynamic fields
+                const selectedValues = Array.from(selects).map(select => select.value);
+                // Combine with existing fields
+                const allUsedFields = [...existingFields, ...selectedValues].filter(f => f);
+                
+                // Update each select's options
+                selects.forEach(select => {
+                    // Save current selection
+                    const currentValue = select.value;
+                    
+                    // Clear all options except the first (default) one
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Add available options, excluding those already selected in other dropdowns or existing fields
+                    availableFields.forEach(field => {
+                        // Skip if this field is already used elsewhere
+                        // but allow the currently selected value in this dropdown
+                        if (allUsedFields.includes(field.name) && field.name !== currentValue) return;
+                        
+                        const option = document.createElement('option');
+                        option.value = field.name;
+                        option.text = field.label;
+                        option.dataset.placeholder = field.placeholder;
+                        select.appendChild(option);
+                    });
+                    
+                    // Restore current selection
+                    if (currentValue) {
+                        select.value = currentValue;
+                    }
+                });
+            }
+            
+            // Add event listener to the add button
+            addFieldBtn.addEventListener('click', addNewField);
+        });
+    </script>
+</body>
+</html>

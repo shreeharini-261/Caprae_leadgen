@@ -1,0 +1,669 @@
+{% extends "base.html" %}
+
+{% block title %}Lead Form{% endblock %}
+
+{% block additional_styles %}
+<style>
+  :root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4cc9f0;
+    --success-color: #4ad66d;
+    --danger-color: #f72585;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    min-height: 100vh;
+  }
+  
+  h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin: 30px 0;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 2px;
+  }
+  
+  .form-section {
+    margin-bottom: 25px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .form-section:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .section-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .full-width {
+    grid-column: span 2;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s ease;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+  }
+  
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+    outline: none;
+    background-color: white;
+  }
+  
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  button {
+    padding: 14px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  button:active {
+    transform: translateY(0);
+  }
+  
+  button[type="submit"] {
+    background-color: var(--primary-color);
+  }
+  
+  button[type="submit"]:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .view-leads {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .view-leads:hover {
+    text-decoration: underline;
+  }
+  
+  .required::after {
+    content: " *";
+    color: var(--danger-color);
+  }
+  
+  .dynamic-field {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: flex-end;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .dynamic-field select, .dynamic-field input, .dynamic-field textarea {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .dynamic-field button {
+    padding: 12px 15px;
+    background-color: var(--danger-color);
+    margin-bottom: 0;
+  }
+  
+  .add-field-btn {
+    background-color: var(--accent-color);
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .add-field-btn:hover {
+    background-color: #3aa8d8;
+  }
+  
+  #dynamic-fields-container {
+    margin-top: 20px;
+  }
+  
+  .field-error {
+    border: 2px solid var(--danger-color) !important;
+    animation: shake 0.5s;
+  }
+  
+  .error-message {
+    color: var(--danger-color);
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+    font-weight: 500;
+  }
+  
+  .alert {
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    animation: fadeInDown 0.5s;
+  }
+  
+  .alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-color: #43a047;
+  }
+  
+  .alert-danger {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #e53935;
+  }
+  
+  .button-group {
+    grid-column: span 2;
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  
+  .button-group button, .button-group a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .btn-outline-primary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .pulse-animation {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Floating labels effect */
+  .input-container {
+    position: relative;
+  }
+  
+  /* Tooltip for info */
+  .info-tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+  .info-tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--dark-color);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 13px;
+    font-weight: normal;
+  }
+  
+  .info-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    form {
+      grid-template-columns: 1fr;
+    }
+    
+    .full-width {
+      grid-column: span 1;
+    }
+    
+    .button-group {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 animate__animated animate__fadeIn">Submit a Lead</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} animate__animated animate__fadeInDown">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<form method="POST" action="{{ url_for('lead.submit') }}" id="leadForm" class="animate__animated animate__fadeInUp">
+  <div class="form-section full-width">
+    <div class="section-title">Basic Information</div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="input-container">
+        <label for="first_name" class="required">First Name</label>
+        <input type="text" id="first_name" name="first_name" required placeholder="Enter first name">
+      </div>
+      
+      <div class="input-container">
+        <label for="last_name" class="required">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required placeholder="Enter last name">
+      </div>
+      
+      <div class="input-container">
+        <label for="email" class="required">Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter email address">
+      </div>
+      
+      <div class="input-container">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required placeholder="Enter phone number">
+      </div>
+      
+      <div class="input-container">
+        <label for="company" class="required">Company Name</label>
+        <input type="text" id="company" name="company" required placeholder="Enter company name">
+      </div>
+      
+      <div class="input-container">
+        <label for="business_type">Business Type</label>
+        <select id="business_type" name="business_type">
+          <option value="" selected disabled></option>
+          <option value="B2B">B2B</option>
+          <option value="B2C">B2C</option>
+          <option value="B2B2C">B2B2C</option>
+        </select>
+      </div>
+      <div class="input-container">
+        <label for="employees_range">Employees</label>
+        <input type="text" id="employees_range" name="employees_range"  placeholder="Enter employees range">
+      </div>
+      <div class="input-container">
+        <label for="revenue"></label>Revenue</label>
+        <input type="text" id="revenue" name="revenue"  placeholder="Enter revenue">
+      </div>
+
+    </div>
+  </div>
+  
+  <div class="form-section full-width">
+    <div class="section-title">
+      Additional Fields
+      <div class="info-tooltip">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span class="tooltip-text">Add any additional information about the lead that might be useful for your team</span>
+      </div>
+    </div>
+    <div id="dynamic-fields-container">
+      <!-- Dynamic fields will be added here -->
+    </div>
+    <button type="button" id="add-field-btn" class="add-field-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Add Custom Field
+    </button>
+    <div class="error-message" id="dynamic-fields-error">Please fill in all added fields or remove empty ones</div>
+  </div>
+  
+  <div class="button-group">
+    <button type="submit" id="submitBtn" class="btn btn-primary pulse-animation">Submit Lead</button>
+    <a href="{{ url_for('lead.upload_page') }}" class="btn btn-outline-primary animate__animated animate__fadeInLeft">Upload CSV</a>
+    <a href="{{ url_for('lead.view_leads') }}" class="btn btn-secondary animate__animated animate__fadeInRight">View Leads</a>
+  </div>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addFieldBtn = document.getElementById('add-field-btn');
+    const dynamicFieldsContainer = document.getElementById('dynamic-fields-container');
+    const leadForm = document.getElementById('leadForm');
+    const dynamicFieldsError = document.getElementById('dynamic-fields-error');
+    
+    // Available database fields with placeholder values
+    const availableFields = [
+      {name: 'title', label: 'Title', placeholder: 'Ex: CEO, CTO, Marketing Director'},
+      {name: 'city', label: 'City', placeholder: 'Ex: San Francisco'},
+      {name: 'state', label: 'State', placeholder: 'Ex: California'},
+      {name: 'website', label: 'Website', placeholder: 'Ex: https://company.com'},
+      {name: 'industry', label: 'Industry', placeholder: 'Ex: Technology, Healthcare, Finance'},
+      {name: 'linkedin_url', label: 'LinkedIn URL', placeholder: 'Ex: https://linkedin.com/company/name'},
+      {name: 'revenue', label: 'Revenue', placeholder: 'Ex: $1M-$5M'},
+      {name: 'product_service_category', label: 'Product/Service Category', placeholder: 'Ex: SaaS, Consulting, Manufacturing'},
+      {name: 'associated_members', label: 'Associated Members', placeholder: 'Ex: John Doe, Jane Smith'},
+      {name: 'employees_range', label: 'Employees Range', placeholder: 'Ex: 10-50, 50-200, 200-500'},
+      {name: 'rev_source', label: 'Revenue Source', placeholder: 'Ex: Subscriptions, Product Sales'},
+      {name: 'year_founded', label: 'Year Founded', placeholder: 'Ex: 2015'},
+      {name: 'owner_linkedin', label: 'Owner LinkedIn', placeholder: 'Ex: https://linkedin.com/in/ownername'},
+      {name: 'owner_age', label: 'Owner Age', placeholder: 'Ex: 35-45'},
+      {name: 'additional_notes', label: 'Notes', placeholder: 'Add any additional information here'},
+      {name: 'score', label: 'Score', placeholder: 'Ex: A, B, C or numerical rating'},
+      {name: 'reasoning', label: 'Reasoning', placeholder: 'Explanation for the score or rating'},
+      {name: 'email_customization_1', label: 'Email Customization 1', placeholder: 'Personalized email content for first outreach'},
+      {name: 'subject_line_1', label: 'Subject Line 1', placeholder: 'Ex: Partnership Opportunity with [Company]'},
+      {name: 'email_customization_2', label: 'Email Customization 2', placeholder: 'Personalized email content for follow-up'},
+      {name: 'subject_line_2', label: 'Subject Line 2', placeholder: 'Ex: Following up on our previous conversation'},
+      {name: 'linkedin_customization_1', label: 'LinkedIn Message 1', placeholder: 'Personalized LinkedIn message for first contact'},
+      {name: 'linkedin_customization_2', label: 'LinkedIn Message 2', placeholder: 'Personalized LinkedIn message for follow-up'}
+    ];
+    
+    // Form validation function
+    leadForm.addEventListener('submit', function(e) {
+      let isValid = true;
+      const dynamicSelects = document.querySelectorAll('#dynamic-fields-container select');
+      const dynamicInputs = document.querySelectorAll('#dynamic-fields-container input, #dynamic-fields-container textarea');
+      
+      // Reset validation styles
+      dynamicSelects.forEach(select => {
+        select.classList.remove('field-error');
+      });
+      
+      dynamicInputs.forEach(input => {
+        input.classList.remove('field-error');
+      });
+      
+      dynamicFieldsError.style.display = 'none';
+      
+      // If there are dynamic fields, validate them
+      if (dynamicSelects.length > 0) {
+        dynamicSelects.forEach((select, index) => {
+          if (!select.value) {
+            select.classList.add('field-error');
+            isValid = false;
+          }
+          
+          // Check corresponding input/textarea
+          if (index < dynamicInputs.length && !dynamicInputs[index].value) {
+            dynamicInputs[index].classList.add('field-error');
+            isValid = false;
+          }
+        });
+        
+        if (!isValid) {
+          dynamicFieldsError.style.display = 'block';
+          e.preventDefault();
+        }
+      }
+    });
+    
+    // Function to create a new field row
+    function addNewField() {
+      const fieldContainer = document.createElement('div');
+      fieldContainer.className = 'dynamic-field';
+      
+      // Create select for field type
+      const fieldSelect = document.createElement('select');
+      fieldSelect.name = 'dynamic_field_name[]';
+      fieldSelect.required = true;
+      
+      // Add options from available fields
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.text = 'Select Field';
+      defaultOption.selected = true;
+      defaultOption.disabled = true;
+      fieldSelect.appendChild(defaultOption);
+      
+      // Get all currently selected fields to exclude them
+      const selectedFields = Array.from(document.querySelectorAll('#dynamic-fields-container select[name="dynamic_field_name[]"]'))
+        .map(select => select.value);
+      
+      availableFields.forEach(field => {
+        // Skip if this field is already selected in another dropdown
+        if (selectedFields.includes(field.name)) return;
+        
+        const option = document.createElement('option');
+        option.value = field.name;
+        option.text = field.label;
+        option.dataset.placeholder = field.placeholder;
+        fieldSelect.appendChild(option);
+      });
+      
+      // Create input for field value
+      let fieldInput = document.createElement('input');
+      fieldInput.type = 'text';
+      fieldInput.name = 'dynamic_field_value[]';
+      fieldInput.placeholder = 'Select a field type first';
+      fieldInput.required = true;
+      
+      // Update placeholder when field type changes
+      fieldSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.dataset.placeholder) {
+          fieldInput.placeholder = selectedOption.dataset.placeholder;
+        } else {
+          fieldInput.placeholder = 'Enter value';
+        }
+        
+        // Change to textarea for longer text fields
+        if (['additional_notes', 'reasoning', 'email_customization_1', 'email_customization_2', 
+             'linkedin_customization_1', 'linkedin_customization_2'].includes(this.value)) {
+          const textarea = document.createElement('textarea');
+          textarea.name = fieldInput.name;
+          textarea.placeholder = fieldInput.placeholder;
+          textarea.required = true;
+          fieldInput.parentNode.replaceChild(textarea, fieldInput);
+          fieldInput = textarea;
+        } else if (fieldInput.tagName === 'TEXTAREA') {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.name = fieldInput.name;
+          input.placeholder = fieldInput.placeholder;
+          input.required = true;
+          fieldInput.parentNode.replaceChild(input, fieldInput);
+          fieldInput = input;
+        }
+        
+        // Update available options in other select dropdowns when this one changes
+        updateAvailableOptions();
+      });
+      
+      // Create remove button
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      removeBtn.title = 'Remove field';
+      removeBtn.addEventListener('click', function() {
+        fieldContainer.classList.add('animate__animated', 'animate__fadeOut');
+        setTimeout(() => {
+          dynamicFieldsContainer.removeChild(fieldContainer);
+          // Update available options after removing a field
+          updateAvailableOptions();
+        }, 300);
+      });
+      
+      // Add all elements to the container
+      fieldContainer.appendChild(fieldSelect);
+      fieldContainer.appendChild(fieldInput);
+      fieldContainer.appendChild(removeBtn);
+      
+      // Add the container to the form
+      dynamicFieldsContainer.appendChild(fieldContainer);
+      
+      // Trigger animation
+      setTimeout(() => {
+        fieldContainer.classList.add('animate__animated', 'animate__fadeIn');
+      }, 10);
+    }
+    
+    // Function to update available options in all select dropdowns
+    function updateAvailableOptions() {
+      const selects = document.querySelectorAll('#dynamic-fields-container select[name="dynamic_field_name[]"]');
+      
+      // Get all currently selected values
+      const selectedValues = Array.from(selects).map(select => select.value);
+      
+      // Update each select's options
+      selects.forEach(select => {
+        // Save current selection
+        const currentValue = select.value;
+        
+        // Clear all options except the first (default) one
+        while (select.options.length > 1) {
+          select.remove(1);
+        }
+        
+        // Add available options, excluding those already selected in other dropdowns
+        availableFields.forEach(field => {
+          // Skip if this field is already selected in another dropdown
+          // but allow the currently selected value in this dropdown
+          if (selectedValues.includes(field.name) && field.name !== currentValue) return;
+          
+          const option = document.createElement('option');
+          option.value = field.name;
+          option.text = field.label;
+          option.dataset.placeholder = field.placeholder;
+          select.appendChild(option);
+        });
+        
+        // Restore current selection
+        if (currentValue) {
+          select.value = currentValue;
+        }
+      });
+    }
+    
+    // Add event listener to the add button
+    addFieldBtn.addEventListener('click', addNewField);
+    
+    // Add floating label functionality to dynamic selects
+    document.addEventListener('change', function(e) {
+      if (e.target.tagName === 'SELECT' && e.target.closest('.dynamic-field')) {
+        const select = e.target;
+        if (select.value) {
+          select.style.background = 'white';
+        } else {
+          select.style.background = '#f8f9fa';
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

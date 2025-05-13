@@ -1,0 +1,15 @@
+Flask
+psycopg2-binary
+gunicorn
+pandas
+numpy
+SQLAlchemy
+Flask-SQLAlchemy
+python-dotenv
+chardet
+flask-login
+werkzeug
+openpyxl
+psycopg2-binary
+pymysql
+python-dotenv

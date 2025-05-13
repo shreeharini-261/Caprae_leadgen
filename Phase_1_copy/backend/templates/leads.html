@@ -1,0 +1,2153 @@
+{% extends "base.html" %}
+{% block title %}Lead Data{% endblock %}
+{% block additional_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/leads.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="animate__animated animate__fadeIn">Lead Data</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="success-message animate__animated animate__fadeInDown">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="filters-container animate__animated animate__fadeIn">
+            <div class="filters-header">
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="searchInput" class="search-box" placeholder="Search across all fields..." onkeyup="handleSearchInput(event)">
+                    <div id="searchHistory" class="search-history"></div>
+                </div>
+            </div>
+
+            <div class="filters-body">
+                <div class="filters-section">
+                    <div class="section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                        </svg>
+                        Basic Filters
+                    </div>
+                    <div class="filters-grid">
+                        <div class="filter-item">
+                            <label class="filter-label">Company</label>
+                            <select id="companyFilter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Companies</option>
+                                {% for company in companies %}
+                                    {% if company %}
+                                    <option value="{{ company }}">{{ company }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Location</label>
+                            <select id="locationFilter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Locations</option>
+                                {% for location in locations %}
+                                    {% if location %}
+                                    <option value="{{ location }}">{{ location }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Role/Title</label>
+                            <select id="roleFilter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Roles</option>
+                                {% for role in roles %}
+                                    {% if role %}
+                                    <option value="{{ role }}">{{ role }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Lead Status</label>
+                            <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Statuses</option>
+                                {% for status in statuses %}
+                                    {% if status %}
+                                    <option value="{{ status }}">{{ status }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Revenue</label>
+                            <input type="text" id="revenueFilter" class="filter-input" 
+                                   placeholder="Min revenue (e.g. $500K, $5M)" 
+                                   title="Enter minimum revenue value (e.g. $500K, $5M) to show leads with equal or higher revenue"
+                                   onkeyup="applyFilters()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters-footer">
+                <div class="filters-footer-left">
+                    <button class="btn btn-delete" onclick="clearAllFilters()" title="Clear all filters (basic and advanced)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Clear All Filters
+                    </button>
+                </div>
+
+                <div class="total-counter">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Total: <strong id="totalCount">{{ leads|length }}</strong> leads
+                </div>
+
+                <div class="actions-group">
+                    <div class="select-all-wrapper">
+                        <label class="select-all-label">
+                            <input type="checkbox" id="selectAll" class="custom-checkbox" onclick="toggleAllCheckboxes()">
+                            Select All
+                        </label>
+                    </div>
+
+                    <form id="exportForm" action="{{ url_for('lead.export_leads') }}" method="POST" style="margin: 0;">
+                        <button type="button" class="export-btn" id="exportBtn" onclick="showExportFormatDialog()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Export Selected (0)</span>
+                        </button>
+                    </form>
+
+                    {% if current_user.role in ['admin', 'developer'] %}
+                    <form id="deleteMultipleForm" action="{{ url_for('lead.delete_multiple_leads') }}" method="POST" style="margin: 0;">
+                        <button type="button" class="btn btn-delete" id="deleteSelectedBtn" disabled onclick="confirmDeleteSelected()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                            <span>Delete Selected (0)</span>
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <button class="toggle-advanced" onclick="toggleAdvancedFilters()" aria-expanded="false">
+                        Advanced Filters
+                        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Separate Advanced Filters Container -->
+        <div class="advanced-filters-container animate__animated" id="advancedFilters">
+            <div class="advanced-filters-header">
+                <div class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                    </svg>
+                    Advanced Filters
+                </div>
+            </div>
+
+            <div class="filter-instructions">
+                <p>Build your filter by:</p>
+                <ol>
+                    <li>Select a field to filter</li>
+                    <li>Choose an operator (equals, contains, etc.)</li>
+                    <li>Enter a value</li>
+                    <li>Add more conditions with + button if needed</li>
+                    <li>Use AND/OR to combine conditions</li>
+                </ol>
+            </div>
+
+            <div class="filter-group" id="filterGroup1">
+                <div class="filter-row">
+                    <select class="filter-select field-select" onchange="updateOperatorOptions(this)">
+                        <option value="">Select Field</option>
+                        <!-- Basic Information -->
+                        <option value="company">Company</option>
+                        <option value="first_name">First Name</option>
+                        <option value="last_name">Last Name</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="title">Title</option>
+                        <option value="city">City</option>
+                        <option value="state">State</option>
+
+                        <!-- Company Details -->
+                        <option value="website">Website URL</option>
+                        <option value="linkedin_url">LinkedIn Profile</option>
+                        <option value="industry">Industry</option>
+                        <option value="revenue">Annual Revenue</option>
+                        <option value="product_service_category">Products/Services</option>
+                        <option value="business_type">Business Type</option>
+                        <option value="employees_range">Employee Range</option>
+                        <option value="year_founded">Year Founded</option>
+
+                        <!-- Owner Information -->
+                        <option value="owner_linkedin">Owner's LinkedIn</option>
+                        <option value="owner_age">Owner's Age Range</option>
+
+                        <!-- Scoring and Notes -->
+                        <option value="status">Status</option>
+                        <option value="additional_notes">Additional Notes</option>
+
+                        <!-- Email Customization -->
+                        <!-- <option value="subject_line_1">Email Subject (1st)</option> -->
+                        <!-- <option value="email_customization_1">Email Content (1st)</option> -->
+                        <!-- <option value="subject_line_2">Email Subject (2nd)</option> -->
+                        <!-- <option value="email_customization_2">Email Content (2nd)</option> -->
+
+                        <!-- LinkedIn Customization -->
+                        <!-- <option value="linkedin_customization_1">LinkedIn Message (1st)</option> -->
+                        <!-- <option value="linkedin_customization_2">LinkedIn Message (2nd)</option> -->
+
+                        <!-- Timestamps -->
+                        <option value="created_at">Created Date</option>
+                        <option value="updated_at">Last Updated</option>
+                    </select>
+                    <select class="filter-select operator-select">
+                        <option value="equals">Equals</option>
+                        <option value="contains">Contains</option>
+                        <option value="starts">Starts with</option>
+                        <option value="ends">Ends with</option>
+                        <option value="greater">Greater than</option>
+                        <option value="less">Less than</option>
+                    </select>
+                    <input type="text" class="filter-input value-input" placeholder="Enter value...">
+                    <select class="filter-select logic-select">
+                        <option value="AND">AND</option>
+                        <option value="OR">OR</option>
+                    </select>
+                    <button class="btn btn-sm btn-add-filter" onclick="addFilterRow(this)" title="Add another condition">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <button class="btn btn-sm btn-remove-filter" onclick="removeFilterRow(this)" title="Remove this condition">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="advanced-filters-actions">
+                <button class="btn btn-apply-filter" onclick="applyFilters()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    Apply Filters
+                </button>
+                <button class="btn btn-clear-filter" onclick="clearAdvancedFilters()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Clear Advanced Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Separate Table Section -->
+        <div class="table-wrapper">
+            <div class="table-container animate__animated animate__fadeInUp">
+                <table id="leadsTable">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-col">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="headerSelectAll" class="custom-checkbox" onclick="toggleAllCheckboxes()">
+                                </div>
+                            </th>
+                            <th class="sticky-col id-col">ID</th>
+                            <!-- Basic Information -->
+                            <th>Company</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email </th>
+                            <th>Phone Number</th>
+                            <th>Title</th>
+                            <th>Location</th>
+                            <!-- Company Details -->
+                            <th>Website URL</th>
+                            <th>LinkedIn Profile</th>
+                            <th>Industry Sector</th>
+                            <th>Annual Revenue</th>
+                            <th>Products/Services</th>
+                            <th>Business Type</th>
+                            <th>Employee</th>
+                            <th>Established Year</th>
+                            <!-- Customization -->
+                            <th>Owner's LinkedIn</th>
+                            <th>Owner's Age Range</th>
+                            <th>Status</th>
+                            <th>Additional Notes</th>
+                            <!-- Email 1 -->
+                            <!-- <th>Email Subject (1st)</th> -->
+                            <!-- <th>Email Content (1st)</th> -->
+                            <!-- Email 2 -->
+                            <!-- <th>Email Subject (2nd)</th> -->
+                            <!-- <th>Email Content (2nd)</th> -->
+                            <!-- LinkedIn -->
+                            <!-- <th>LinkedIn Message (1st)</th> -->
+                            <!-- <th>LinkedIn Message (2nd)</th> -->
+                            <!-- Timestamps -->
+                            <th class="date-col">Created Date</th>
+                            <th class="date-col">Last Updated</th>
+                            <!-- Actions -->
+                            <th class="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in leads %}
+                        <tr class="animate__animated animate__fadeIn" data-index="{{ loop.index }}">
+                            <td class="checkbox-col">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" class="lead-checkbox custom-checkbox" value="{{ lead.id }}" onchange="updateExportButton()">
+                                </div>
+                            </td>
+                            <td class="sticky-col id-col">{{ lead.id }}</td>
+                            <!-- Basic Information -->
+                            <td>{{ lead.company or '-' }}</td>
+                            <td>{{ lead.first_name or '-' }}</td>
+                            <td>{{ lead.last_name or '-' }}</td>
+                            <td>{{ lead.email or '-' }}</td>
+                            <td>{{ lead.phone or '-' }}</td>
+                            <td>{{ lead.title or '-' }}</td>
+                            <td>{{ (lead.city ~ ', ' ~ lead.state) if (lead.city and lead.state) else (lead.city or lead.state or '-') }}</td>
+                            <!-- Company Details -->
+                            <td>{{ lead.website or '-' }}</td>
+                            <td>{{ lead.linkedin_url or '-' }}</td>
+                            <td>{{ lead.industry or '-' }}</td>
+                            <td>{{ lead.revenue or '-' }}</td>
+                            <td class="truncate" title="{{ lead.product_service_category }}">{{ lead.product_service_category or '-' }}</td>
+                            <td>{{ lead.business_type or '-' }}</td>
+                            <td>{{ lead.employees_range or '-' }}</td>
+                            <td>{{ lead.year_founded|int if lead.year_founded else '-' }}</td>
+                            <!-- Customization -->
+                            <td>{{ lead.owner_linkedin or '-' }}</td>
+                            <td>{% if lead.owner_age and lead.owner_age|string|lower != 'nan' %}{{ lead.owner_age|int if lead.owner_age|string|float == lead.owner_age|string|float|int else lead.owner_age }}{% else %}-{% endif %}</td>
+                            <td>{{ lead.status|capitalize or 'New' }}</td>
+                            <td class="truncate" title="{{ lead.additional_notes }}">{{ lead.additional_notes or '-' }}</td>
+                            <!-- Email 1 -->
+                            <!-- <td>{{ lead.subject_line_1 or '-' }}</td> -->
+                            <!-- <td class="truncate" title="{{ lead.email_customization_1 }}">{{ lead.email_customization_1 or '-' }}</td> -->
+                            <!-- Email 2 -->
+                            <!-- <td>{{ lead.subject_line_2 or '-' }}</td> -->
+                            <!-- <td class="truncate" title="{{ lead.email_customization_2 }}">{{ lead.email_customization_2 or '-' }}</td> -->
+                            <!-- LinkedIn -->
+                            <!-- <td class="truncate" title="{{ lead.linkedin_customization_1 }}">{{ lead.linkedin_customization_1 or '-' }}</td> -->
+                            <!-- <td class="truncate" title="{{ lead.linkedin_customization_2 }}">{{ lead.linkedin_customization_2 or '-' }}</td> -->
+                            <!-- Timestamps -->
+                            <td class="date-col">{{ lead.created_at.strftime('%Y-%m-%d %H:%M') if lead.created_at else '-' }}</td>
+                            <td class="date-col">{{ lead.updated_at.strftime('%Y-%m-%d %H:%M') if lead.updated_at else '-' }}</td>
+                            <!-- Actions -->
+                            <td class="actions">
+                                <!-- Status update for all users -->
+                                <form method="POST" action="{{ url_for('lead.update_status', lead_id=lead.id) }}" style="display: inline-block; margin-right: 10px;">
+                                    <select name="status" onchange="this.form.submit()" class="status-select" style="padding: 6px 10px; border-radius: 4px; border: 1px solid #ddd;">
+                                        <option value="new" {% if lead.status == 'new' %}selected{% endif %}>New</option>
+                                        <option value="contacted" {% if lead.status == 'contacted' %}selected{% endif %}>Contacted</option>
+                                        <option value="qualified" {% if lead.status == 'qualified' %}selected{% endif %}>Qualified</option>
+                                        <option value="proposal" {% if lead.status == 'proposal' %}selected{% endif %}>Proposal</option>
+                                        <option value="closed" {% if lead.status == 'closed' %}selected{% endif %}>Closed</option>
+                                    </select>
+                                </form>
+
+                                {% if current_user.role in ['admin', 'developer'] %}
+                                <a href="{{ url_for('lead.edit_lead', lead_id=lead.id) }}" class="btn btn-edit">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Edit
+                                </a>
+                                {% endif %}
+
+                                {% if current_user.role in ['admin', 'developer'] %}
+                                <a href="{{ url_for('lead.delete_lead', lead_id=lead.id) }}" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this lead?')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                    Delete
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bottom-controls">
+            <div class="bottom-controls-left">
+                <a href="{{ url_for('lead.form') }}" class="btn btn-back">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Form
+                </a>
+            </div>
+            <div class="pagination-container">
+                <div class="pagination">
+                    <div class="rows-per-page">
+                        <label>Rows per page:</label>
+                        <select class="rows-select" onchange="changeRowsPerPage(this.value)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                    <button onclick="changePage(-1)" class="btn btn-pagination">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Previous
+                    </button>
+                    <span class="page-info">Page <span id="currentPage">1</span> of <span id="totalPages">1</span></span>
+                    <button onclick="changePage(1)" class="btn btn-pagination">
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Export Format Dialog -->
+    <div id="exportFormatDialog" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="background-color: white; margin: 15% auto; padding: 24px; border-radius: 12px; width: 400px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+            <h3 style="margin-top: 0; color: var(--primary-color); font-size: 24px; text-align: center; margin-bottom: 24px;">Export Options</h3>
+
+            <div style="margin: 20px 0;">
+                <div style="margin-bottom: 16px; font-weight: 600; font-size: 16px; color: #333;">What to Export:</div>
+                <div style="display: flex; margin-bottom: 24px; gap: 20px;">
+                    <label style="display: flex; align-items: center; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background-color: #f8fafc; width: 100%; cursor: pointer; transition: all 0.2s ease;">
+                        <input type="radio" name="exportType" value="selected" style="margin-right: 12px; width: 18px; height: 18px; accent-color: var(--primary-color);"> 
+                        <div>
+                            <div style="font-weight: 500;">Selected Leads</div>
+                            <div style="color: #64748b; font-size: 14px;">(<span id="selectedCount">0</span> leads)</div>
+                        </div>
+                    </label>
+                    <label style="display: flex; align-items: center; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background-color: #f8fafc; width: 100%; cursor: pointer; transition: all 0.2s ease;">
+                        <input type="radio" name="exportType" value="filtered" style="margin-right: 12px; width: 18px; height: 18px; accent-color: var(--primary-color);"> 
+                        <div>
+                            <div style="font-weight: 500;">Filtered Leads</div>
+                            <div style="color: #64748b; font-size: 14px;">(<span id="filteredCount">0</span> leads)</div>
+                        </div>
+                    </label>
+                </div>
+
+                <div style="margin-bottom: 16px; font-weight: 600; font-size: 16px; color: #333;">Export Format:</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button onclick="exportLeads('csv')" class="btn" style="width: 100%; background: var(--primary-color); color: white; padding: 12px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease;">
+                        Export as CSV
+                    </button>
+                    <button onclick="exportLeads('excel')" class="btn" style="width: 100%; background: var(--success-color); color: white; padding: 12px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease;">
+                        Export as Excel
+                    </button>
+                </div>
+            </div>
+            <button onclick="closeExportFormatDialog()" class="btn" style="width: 100%; background: #f1f5f9; color: #475569; padding: 12px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease; margin-top: 16px;">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    {% include 'components/subscription_modal.html' %}
+    {% if show_subscription_modal %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showSubscriptionModal("{{ subscription_message }}");
+        });
+    </script>
+    {% endif %}
+
+    <script>
+        // Add hover functionality for truncated content
+        document.querySelectorAll('.truncate').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                if (this.offsetWidth < this.scrollWidth) {
+                    this.title = this.textContent;
+                }
+            });
+        });
+
+        // Apply animation delays based on data-index attribute
+        document.querySelectorAll('tr[data-index]').forEach(row => {
+            const index = row.getAttribute('data-index');
+            row.style.animationDelay = `${index * 0.03}s`;
+        });
+
+        function toggleAllCheckboxes() {
+            // Get both header checkbox and top "Select All" checkbox
+            const topSelectAllCheckbox = document.getElementById('selectAll');
+            const headerCheckbox = document.getElementById('headerSelectAll');
+
+            // Set checked state based on whichever checkbox triggered the event
+            const newCheckedState = document.activeElement === headerCheckbox ? 
+                                    headerCheckbox.checked : 
+                                    topSelectAllCheckbox.checked;
+
+            // Sync both checkboxes
+            if (headerCheckbox) headerCheckbox.checked = newCheckedState;
+            if (topSelectAllCheckbox) topSelectAllCheckbox.checked = newCheckedState;
+
+            // Apply checked state to all lead checkboxes
+            const checkboxes = document.querySelectorAll('.lead-checkbox');
+            checkboxes.forEach(checkbox => {
+                if (checkbox) checkbox.checked = newCheckedState;
+            });
+
+            // Update export button state
+            updateExportButton();
+        }
+
+        // Add event listener to sync checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerCheckbox = document.getElementById('headerSelectAll');
+            const topSelectAllCheckbox = document.getElementById('selectAll');
+
+            // Listen for changes on header checkbox
+            if (headerCheckbox) {
+                headerCheckbox.addEventListener('change', function() {
+                    toggleAllCheckboxes();
+                });
+            }
+
+            // Listen for changes on top Select All checkbox
+            if (topSelectAllCheckbox) {                topSelectAllCheckbox.addEventListener('change', function() {
+                    toggleAllCheckboxes();
+                });
+            }
+
+            // Listen for changes on individual lead checkboxes to manage the "Select All" state
+            document.querySelectorAll('.lead-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allCheckboxes = document.querySelectorAll('.lead-checkbox');
+                    const checkedCount = document.querySelectorAll('.lead-checkbox:checked').length;
+
+                    // If all checkboxes are checked, set "Select All" to checked
+                    // If not all are checked, set "Select All" to unchecked
+                    const allChecked = checkedCount === allCheckboxes.length;
+
+                    if (headerCheckbox) headerCheckbox.checked = allChecked;
+                    if (topSelectAllCheckbox) topSelectAllCheckbox.checked = allChecked;
+
+                    // Update export button
+                    updateExportButton();
+                });
+            });
+
+            // Initialize export button state
+            updateExportButton();
+        });
+
+        function updateExportButton() {
+            const selectedCheckboxes = document.querySelectorAll('.lead-checkbox:checked');
+            const exportBtn = document.getElementById('exportBtn');
+            const exportForm = document.getElementById('exportForm');
+
+            // Remove any existing hidden inputs
+            const existingInputs = exportForm.querySelectorAll('input[name="selected_leads[]"]');
+            existingInputs.forEach(input => input.remove());
+
+            // Add new hidden inputs for selected leads
+            selectedCheckboxes.forEach(checkbox => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selected_leads[]';
+                input.value = checkbox.value;
+                exportForm.appendChild(input);
+            });
+
+            const selectedCount = selectedCheckboxes.length;
+
+            // Count rows for filtered count
+            const visibleRows = document.querySelectorAll('#leadsTable tbody tr:not([style*="display: none"])').length;
+            const totalRows = document.querySelectorAll('#leadsTable tbody tr').length;
+
+            // Check if any filter is active
+            const isFilterActive = isAnyFilterActive();
+
+            // If no filter is active, show total rows instead of "filtered"
+            const filteredCount = isFilterActive ? visibleRows : totalRows;
+            const filterText = isFilterActive ? 'Filtered' : 'All';
+
+            exportBtn.disabled = selectedCount === 0 && filteredCount === 0;
+            exportBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export (${selectedCount > 0 ? selectedCount + ' Selected' : filteredCount + ' ' + filterText})</span>
+            `;
+
+            // Update delete button if it exists
+            const deleteBtn = document.getElementById('deleteSelectedBtn');
+            if (deleteBtn) {
+                deleteBtn.disabled = selectedCount === 0;
+                deleteBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    <span>Delete Selected (${selectedCount})</span>
+                `;
+
+                // Update hidden inputs for delete form
+                const deleteForm = document.getElementById('deleteMultipleForm');
+                if (deleteForm) {
+                    // Remove any existing hidden inputs
+                    const existingDeleteInputs = deleteForm.querySelectorAll('input[name="selected_leads[]"]');
+                    existingDeleteInputs.forEach(input => input.remove());
+
+                    // Add new hidden inputs for selected leads
+                    selectedCheckboxes.forEach(checkbox => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'selected_leads[]';
+                        input.value = checkbox.value;
+                        deleteForm.appendChild(input);
+                    });
+                }
+            }
+
+            // Update counts in the export dialog
+            if (document.getElementById('selectedCount')) {
+                document.getElementById('selectedCount').textContent = selectedCount;
+            }
+            if (document.getElementById('filteredCount')) {
+                document.getElementById('filteredCount').textContent = filteredCount;
+
+                // Update filtered label text
+                const filteredCountLabel = document.querySelector('label[for="exportType-filtered"] div, input[name="exportType"][value="filtered"]').closest('label').querySelector('div div:first-child');
+                if (filteredCountLabel) {
+                    filteredCountLabel.textContent = isFilterActive ? 'Filtered Leads' : 'All Leads';
+                }
+            }
+        }
+
+        // Function to check if any filter is active
+        function isAnyFilterActive() {
+            // Check basic filters
+            if (document.getElementById('companyFilter').value !== '') return true;
+            if (document.getElementById('locationFilter').value !== '') return true;
+            if (document.getElementById('roleFilter').value !== '') return true;
+            if (document.getElementById('statusFilter').value !== '') return true;
+            if (document.getElementById('revenueFilter').value !== '') return true;
+            if (document.getElementById('searchInput').value !== '') return true;
+
+            // Check advanced filters
+            const advancedFilters = document.querySelectorAll('.filter-row');
+            for (let row of advancedFilters) {
+                const field = row.querySelector('.field-select').value;
+                const value = row.querySelector('.value-input').value;
+                if (field && value) return true;
+            }
+
+            return false;
+        }
+
+        function toggleAdvancedFilters() {
+            const advancedFilters = document.getElementById('advancedFilters');
+            const toggleButton = document.querySelector('.toggle-advanced');
+            const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                advancedFilters.classList.remove('show');
+                toggleButton.setAttribute('aria-expanded', 'false');
+            } else {
+                advancedFilters.classList.add('show', 'animate__fadeIn');
+                toggleButton.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function toggleColumn(columnIndex) {
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tr');
+
+            // Toggle header and all cells in the column
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName(i === 0 ? 'th' : 'td');
+                if (cells[columnIndex]) {
+                    cells[columnIndex].style.display = cells[columnIndex].style.display === 'none' ? '' : 'none';
+                }
+            }
+        }
+
+        function normalizeValue(value) {
+            return value ? value.toString().trim().toLowerCase() : '';
+        }
+
+        function applyFilters() {
+            // Get basic filter values
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const company = document.getElementById('companyFilter').value;
+            const location = document.getElementById('locationFilter').value;
+            const role = document.getElementById('roleFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const revenue = document.getElementById('revenueFilter').value.trim();
+
+            // Get advanced filter conditions
+            const advancedFilters = [];
+            document.querySelectorAll('.filter-row').forEach(row => {
+                const field = row.querySelector('.field-select').value;
+                const operator = row.querySelector('.operator-select').value;
+                const value = row.querySelector('.value-input').value.trim();
+                const logic = row.querySelector('.logic-select').value;
+
+                if (field && operator && value) {
+                    advancedFilters.push({ field, operator, value, logic });
+                }
+            });
+
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tr');
+            let visibleCount = 0;
+
+            // Column mapping for advanced filters
+            const columnMap = {
+                // Checkbox(0), ID(1), then data columns start
+                'company': 2,
+                'first_name': 3,
+                'last_name': 4,
+                'email': 5,
+                'phone': 6,
+                'title': 7,
+                'location': 8, // Combined city and state
+                'city': 8,
+                'state': 8,
+                'website': 9,
+                'linkedin_url': 10,
+                'industry': 11,
+                'revenue': 12,
+                'product_service_category': 13,
+                'business_type': 14,
+                'employees_range': 15,
+                'year_founded': 16,
+                'owner_linkedin': 17,
+                'owner_age': 18,
+                'status': 19,
+                'additional_notes': 20,
+                'created_at': 21,
+                'updated_at': 22
+                // Removed fields:
+                // 'score': 19,
+                // 'reasoning': 21,
+                // 'subject_line_1': 23,
+                // 'email_customization_1': 24,
+                // 'subject_line_2': 25,
+                // 'email_customization_2': 26,
+                // 'linkedin_customization_1': 27,
+                // 'linkedin_customization_2': 28,
+            };
+
+            // Skip header row
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                let shouldShow = true;
+
+                // Apply basic filters
+                if (shouldShow && company) {
+                    const companyCell = row.cells[2].textContent.trim().toLowerCase();
+                    shouldShow = companyCell === company.toLowerCase();
+                }
+
+                if (shouldShow && location) {
+                    const locationCell = row.cells[8].textContent.trim().toLowerCase();
+                    shouldShow = locationCell === location.toLowerCase();
+                }
+
+                if (shouldShow && role) {
+                    const roleCell = row.cells[7].textContent.trim().toLowerCase();
+                    shouldShow = roleCell === role.toLowerCase();
+                }
+
+                if (shouldShow && status) {
+                    const statusCell = row.cells[19].textContent.trim().toLowerCase();
+                    shouldShow = statusCell === status.toLowerCase();
+                }
+
+
+                if (shouldShow && revenue) {
+                    const revenueCell = row.cells[12].textContent.trim();
+                    // Compare revenue values (handle $XM format)
+                    const rowRevenueValue = parseRevenueValue(revenueCell);
+                    const filterRevenueValue = parseRevenueValue(revenue);
+
+                    if (rowRevenueValue !== null && filterRevenueValue !== null) {
+                        shouldShow = rowRevenueValue >= filterRevenueValue;
+                    } else {
+                        // If we can't parse the revenue values, fall back to string comparison
+                        shouldShow = revenueCell.toLowerCase().includes(revenue.toLowerCase());
+                    }
+                }
+
+                // Apply search text
+                if (shouldShow && searchText) {
+                    let found = false;
+                    const cells = row.getElementsByTagName('td');
+                    for (let cell of cells) {
+                        if (cell.textContent.toLowerCase().includes(searchText)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    shouldShow = found;
+                }
+
+                // Apply advanced filters
+                if (shouldShow && advancedFilters.length > 0) {
+                    let advancedResult = true;
+
+                    advancedFilters.forEach((filter, index) => {
+                        const columnIndex = columnMap[filter.field] || -1;
+
+                        // Skip if column mapping not found
+                        if (columnIndex === -1) {
+                            return;
+                        }
+
+                        const cellValue = row.cells[columnIndex].textContent.trim();
+                        const filterValue = filter.value;
+                        let matches = false;
+
+                        // Special handling for revenue field
+                        if (filter.field === 'revenue') {
+                            const cellRevenueValue = parseRevenueValue(cellValue);
+                            const filterRevenueValue = parseRevenueValue(filterValue);
+
+                            if (cellRevenueValue !== null && filterRevenueValue !== null) {
+                                switch (filter.operator) {
+                                    case 'equals':
+                                        matches = Math.abs(cellRevenueValue - filterRevenueValue) < 0.01; // Approximation for floating point
+                                        break;
+                                    case 'contains':
+                                        matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                                        break;
+                                    case 'greater':
+                                        matches = cellRevenueValue > filterRevenueValue;
+                                        break;
+                                    case 'less':
+                                        matches = cellRevenueValue < filterRevenueValue;
+                                        break;
+                                    default:
+                                        matches = cellValue.toLowerCase() === filterValue.toLowerCase();
+                                }
+                            }
+                        } 
+                        // Handle date fields
+                        else if (['created_at', 'updated_at'].includes(filter.field)) {
+                            const cellDate = new Date(cellValue);
+                            let filterDate;
+
+                            try {
+                                filterDate = new Date(filterValue);
+                            } catch (e) {
+                                filterDate = null;
+                            }
+
+                            if (!isNaN(cellDate) && filterDate && !isNaN(filterDate)) {
+                                switch (filter.operator) {
+                                    case 'equals':
+                                        matches = cellDate.toDateString() === filterDate.toDateString();
+                                        break;
+                                    case 'greater':
+                                        matches = cellDate > filterDate;
+                                        break;
+                                    case 'less':
+                                        matches = cellDate < filterDate;
+                                        break;
+                                    default:
+                                        matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                                }
+                            } else {
+                                matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                            }
+                        }
+                        // Handle numeric fields
+                        else if (['year_founded', 'owner_age'].includes(filter.field)) {
+                            const cellNum = parseFloat(cellValue);
+                            const filterNum = parseFloat(filterValue);
+
+                            if (!isNaN(cellNum) && !isNaN(filterNum)) {
+                                switch (filter.operator) {
+                                    case 'equals':
+                                        matches = cellNum === filterNum;
+                                        break;
+                                    case 'greater':
+                                        matches = cellNum > filterNum;
+                                        break;
+                                    case 'less':
+                                        matches = cellNum < filterNum;
+                                        break;
+                                    default:
+                                        matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                                }
+                            } else {
+                                matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                            }
+                        }
+                        // Default string comparison for other fields
+                        else {
+                            switch (filter.operator) {
+                                case 'equals':
+                                    matches = cellValue.toLowerCase() === filterValue.toLowerCase();
+                                    break;
+                                case 'contains':
+                                    matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                                    break;
+                                case 'starts':
+                                    matches = cellValue.toLowerCase().startsWith(filterValue.toLowerCase());
+                                    break;
+                                case 'ends':
+                                    matches = cellValue.toLowerCase().endsWith(filterValue.toLowerCase());
+                                    break;
+                                default:
+                                    matches = cellValue.toLowerCase().includes(filterValue.toLowerCase());
+                            }
+                        }
+
+                        if (index === 0) {
+                            advancedResult = matches;
+                        } else {
+                            const previousLogic = advancedFilters[index - 1].logic;
+                            advancedResult = previousLogic === 'AND' ? 
+                                (advancedResult && matches) : 
+                                (advancedResult || matches);
+                        }
+                    });
+
+                    shouldShow = advancedResult;
+                }
+
+                // Update row visibility
+                row.style.display = shouldShow ? '' : 'none';
+                if (shouldShow) visibleCount++;
+            }
+
+            // Update total count
+            document.getElementById('totalCount').textContent = visibleCount;
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.getElementById('selectAll');
+            if (selectAllCheckbox) selectAllCheckbox.checked = false;
+
+            // Update export button state
+            updateExportButton();
+        }
+
+        // Remove automatic filter application on input change
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add change event listeners to all filter dropdowns
+            const filters = ['companyFilter', 'locationFilter', 'roleFilter', 'statusFilter', 'revenueFilter'];
+            filters.forEach(filterId => {
+                const filter = document.getElementById(filterId);
+                if (filter) {
+                    filter.addEventListener('change', applyFilters);
+                }
+            });
+
+            // Add input event listener to search box
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', applyFilters);
+                searchInput.addEventListener('keyup', handleSearchInput);
+
+                // Show all search history when focusing on search box
+                searchInput.addEventListener('focus', function() {
+                    displaySearchHistory(); // Show all history items regardless of input value
+                    document.getElementById('searchHistory').classList.add('show');
+                });
+            }
+
+            // Load search history on page load
+            loadSearchHistory();
+
+            // Close search history when clicking outside
+            document.addEventListener('click', function(event) {
+                const searchWrapper = document.querySelector('.search-wrapper');
+                if (searchWrapper && !searchWrapper.contains(event.target)) {
+                    const searchHistory = document.getElementById('searchHistory');
+                    if (searchHistory) {
+                        searchHistory.classList.remove('show');
+                    }
+                }
+            });
+
+            // Initialize filters
+            populateFilters();
+
+            // Initialize advanced filter field select change listeners
+            document.querySelectorAll('.field-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    updateOperatorOptions(this);
+                });
+
+                // Initialize operator options for existing rows
+                if (select.value) {
+                    updateOperatorOptions(select);
+                }
+            });
+
+            // Initialize export button state
+            updateExportButton();
+        });
+
+        function clearFilters() {
+            // Reset all filter dropdowns
+            const filters = ['companyFilter', 'locationFilter', 'roleFilter', 'statusFilter', 'revenueFilter'];
+            filters.forEach(filterId => {
+                const filter = document.getElementById(filterId);
+                if (filter) {
+                    filter.value = '';
+                }
+            });
+
+            // Clear search input
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+
+            // Show all rows
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tr');
+            let totalRows = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].style.display = '';
+                totalRows++;
+            }
+
+            // Update total count
+            document.getElementById('totalCount').textContent = totalRows;
+
+            // Uncheck select all checkboxes
+            const topSelectAllCheckbox = document.getElementById('selectAll');
+            const headerCheckbox = document.getElementById('headerSelectAll');
+            if (topSelectAllCheckbox) topSelectAllCheckbox.checked = false;
+            if (headerCheckbox) headerCheckbox.checked = false;
+
+            // Update export button state
+            updateExportButton();
+        }
+
+        // Update the existing searchTable function to use applyFilters
+        function searchTable() {
+            applyFilters();
+        }
+
+        // Initialize search on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for search input
+            document.getElementById('searchInput').addEventListener('keyup', handleSearchInput);
+
+            // Load search history on page load
+            loadSearchHistory();
+
+            // Add event listener to show all search history when clicking in the search box
+            document.getElementById('searchInput').addEventListener('focus', function() {
+                displaySearchHistory(); // Show all history items regardless of input value
+                document.getElementById('searchHistory').classList.add('show');
+            });
+
+            // Close search history when clicking outside
+            document.addEventListener('click', function(event) {
+                const searchWrapper = document.querySelector('.search-wrapper');
+                if (!searchWrapper.contains(event.target)) {
+                    document.getElementById('searchHistory').classList.remove('show');
+                }
+            });
+
+            // Add row highlighting on hover
+            const tableRows = document.querySelectorAll('#leadsTable tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.classList.add('highlight');
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.classList.remove('highlight');
+                });
+            });
+
+            // Initialize export button state
+            updateExportButton();
+        });
+
+        // Functions for search history
+        function handleSearchInput(event) {
+            const searchText = event.target.value.trim();
+
+            // Display search history based on current input
+            if (searchText.length > 0) {
+                displaySearchHistory(searchText);
+                document.getElementById('searchHistory').classList.add('show');
+            } else {
+                displaySearchHistory(); // Show all history when input is empty
+                document.getElementById('searchHistory').classList.add('show');
+            }
+
+            // Apply filters to table
+            applyFilters();
+
+            // Add to search history if Enter key is pressed and text is not empty
+            if (event.key === 'Enter' && searchText.length > 0) {
+                addToSearchHistory(searchText);
+            }
+        }
+
+        function saveSearchQuery(query) {
+            // Don't save empty or very short queries
+            if (!query || query.length < 3) {
+                return;
+            }
+
+            // Get existing history or initialize an empty array
+            let searchHistory = JSON.parse(localStorage.getItem('leadSearchHistory') || '[]');
+
+            // Check if the query already exists in history
+            const existingIndex = searchHistory.findIndex(item => item.query.toLowerCase() === query.toLowerCase());
+
+            if (existingIndex !== -1) {
+                // Remove the existing entry so it can be moved to the top
+                searchHistory.splice(existingIndex, 1);
+            }
+
+            // Add the new query at the beginning with timestamp
+            searchHistory.unshift({
+                query: query,
+                timestamp: new Date().toISOString()
+            });
+
+            // Limit history to 10 items
+            if (searchHistory.length > 10) {
+                searchHistory = searchHistory.slice(0, 10);
+            }
+
+            // Save back to localStorage
+            localStorage.setItem('leadSearchHistory', JSON.stringify(searchHistory));
+
+            // Refresh the display
+            loadSearchHistory();
+        }
+
+        function loadSearchHistory() {
+            const searchHistory = document.getElementById('searchHistory');
+            const history = JSON.parse(localStorage.getItem('leadSearchHistory') || '[]');
+
+            if (history.length === 0) {
+                searchHistory.classList.remove('show');
+                return;
+            }
+
+            // Clear the existing history items
+            searchHistory.innerHTML = '';
+
+            // Add history items
+            history.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'search-history-item';
+
+                // Format the timestamp to a relative time (e.g., "2 hours ago")
+                const timestamp = new Date(item.timestamp);
+                const relativeTime = getRelativeTimeString(timestamp);
+
+                historyItem.innerHTML = `
+                    <div class="search-history-text">${item.query}</div>
+                    <div class="search-history-timestamp">${relativeTime}</div>
+                `;
+
+                // Add click event to use this search query
+                historyItem.addEventListener('click', function() {
+                    document.getElementById('searchInput').value = item.query;
+                    searchTable();
+                    searchHistory.classList.remove('show');
+                });
+
+                searchHistory.appendChild(historyItem);
+            });
+
+            // Add a "Clear History" button
+            const clearButton = document.createElement('div');
+            clearButton.className = 'search-history-clear';
+            clearButton.textContent = 'Clear Search History';
+            clearButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clearSearchHistory();
+            });
+
+            searchHistory.appendChild(clearButton);
+        }
+
+        function displaySearchHistory(filter = '') {
+            const searchHistory = document.getElementById('searchHistory');
+            const history = JSON.parse(localStorage.getItem('leadSearchHistory') || '[]');
+
+            if (history.length === 0) {
+                searchHistory.classList.remove('show');
+                return;
+            }
+
+            // Clear the existing history items
+            searchHistory.innerHTML = '';
+
+            // Filter and add history items
+            const filteredHistory = filter 
+                ? history.filter(item => item.query.toLowerCase().includes(filter.toLowerCase()))
+                : history;
+
+            if (filteredHistory.length === 0) {
+                searchHistory.classList.remove('show');
+                return;
+            }
+
+            filteredHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'search-history-item';
+
+                // Format the timestamp to a relative time
+                const timestamp = new Date(item.timestamp);
+                const relativeTime = getRelativeTimeString(timestamp);
+
+                historyItem.innerHTML = `
+                    <div class="search-history-text">${item.query}</div>
+                    <div class="search-history-timestamp">${relativeTime}</div>
+                `;
+
+                // Add click event to use this search query
+                historyItem.addEventListener('click', function() {
+                    document.getElementById('searchInput').value = item.query;
+                    searchTable();
+                    searchHistory.classList.remove('show');
+                });
+
+                searchHistory.appendChild(historyItem);
+            });
+
+            // Add a "Clear History" button
+            const clearButton = document.createElement('div');
+            clearButton.className = 'search-history-clear';
+            clearButton.textContent = 'Clear Search History';
+            clearButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clearSearchHistory();
+            });
+
+            searchHistory.appendChild(clearButton);
+        }
+
+        function clearSearchHistory() {
+            localStorage.removeItem('leadSearchHistory');
+            document.getElementById('searchHistory').innerHTML = '';
+            document.getElementById('searchHistory').classList.remove('show');
+        }
+
+        function getRelativeTimeString(date) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+
+            if (diffInSeconds < 60) {
+                return 'just now';
+            }
+
+            const diffInMinutes = Math.floor(diffInSeconds / 60);
+            if (diffInMinutes < 60) {
+                return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+            }
+
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) {
+                return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+            }
+
+            const diffInDays = Math.floor(diffInHours / 24);
+            if (diffInDays < 30) {
+                return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+            }
+
+            // For older dates, return the actual date
+            return date.toLocaleDateString();
+        }
+
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Add animation class to table rows
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('table tr');
+            rows.forEach((row, index) => {
+                row.classList.add('animate__animated', 'animate__fadeIn');
+                row.style.animationDelay = `${index * 0.05}s`;
+            });
+        });
+
+        // Add sorting functionality
+        function sortTable(columnIndex) {
+            const table = document.getElementById('leadsTable');
+            const tbody = table.getElementsByTagName('tbody')[0];
+            const rows = Array.from(tbody.getElementsByTagName('tr'));
+            const sortIcon = event.target;
+            const isAscending = !sortIcon.classList.contains('asc');
+
+            // Reset all sort icons
+            document.querySelectorAll('.sort-icon').forEach(icon => {
+                icon.classList.remove('asc');
+            });
+
+            if (isAscending) {
+                sortIcon.classList.add('asc');
+            }
+
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent.trim();
+                const bValue = b.cells[columnIndex].textContent.trim();
+
+                // Check if the values are dates
+                const aDate = new Date(aValue);
+                const bDate = new Date(bValue);
+                if (!isNaN(aDate) && !isNaN(bDate)) {
+                    return isAscending ? aDate - bDate : bDate - aDate;
+                }
+
+                // Check if the values are numbers
+                const aNum = parseFloat(aValue);
+                const bNum = parseFloat(bValue);
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return isAscending ? aNum - bNum : bNum - aNum;
+                }
+
+                // Sort as strings
+                return isAscending ? 
+                    aValue.localeCompare(bValue) : 
+                    bValue.localeCompare(aValue);
+            });
+
+            // Reorder the rows
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // Add sort icons to table headers
+        document.addEventListener('DOMContentLoaded', function() {
+            const headers = document.querySelectorAll('#leadsTable th');
+            headers.forEach((header, index) => {
+                // Skip checkbox column (index 0), ID column (index 1), and actions column
+                if (index > 1 && !header.classList.contains('actions')) {
+                    const sortIcon = document.createElement('span');
+                    sortIcon.innerHTML = '↓';
+                    sortIcon.className = 'sort-icon';
+                    sortIcon.onclick = () => sortTable(index);
+                    header.appendChild(sortIcon);
+                }
+            });
+        });
+
+        function clearAdvancedFilters() {
+            // Clear all advanced filter inputs
+            document.querySelectorAll('.filter-row').forEach((row, index) => {
+                if (index === 0) {
+                    // Reset first row to default values
+                    row.querySelector('.field-select').value = '';
+                    row.querySelector('.operator-select').value = 'equals';
+                    row.querySelector('.value-input').value = '';
+                    row.querySelector('.logic-select').value = 'AND';
+                } else {
+                    // Remove additional rows
+                    row.remove();
+                }
+            });
+
+            // Apply filters to update the table
+            applyFilters();
+        }
+
+        // Function to parse revenue values like $5M, $1.5M, etc.
+        function parseRevenueValue(revenueStr) {
+            if (!revenueStr || revenueStr === '-') return null;
+
+            // Handle "nan" value
+            if (revenueStr.toLowerCase() === 'nan') return 0;
+
+            // Special case for < or > with revenue
+            if (revenueStr.includes('<') || revenueStr.includes('>')) {
+                // Extract the numeric part after < or >
+                const match = revenueStr.match(/[<>]\s*\$?(\d+(?:\.\d+)?[MmKk]?)/);
+                if (match && match[1]) {
+                    const numericPart = match[1];
+                    let value;
+
+                    if (numericPart.endsWith('M') || numericPart.endsWith('m')) {
+                        value = parseFloat(numericPart.slice(0, -1));
+                    } else if (numericPart.endsWith('K') || numericPart.endsWith('k')) {
+                        value = parseFloat(numericPart.slice(0, -1)) / 1000; // Convert K to M
+                    } else {
+                        value = parseFloat(numericPart);
+                    }
+
+                    // For < we return a small value, for > we return the actual value
+                    return revenueStr.includes('<') ? Math.max(0.1, value - 0.1) : value;
+                }
+            }
+
+            const cleanStr = revenueStr.replace(/[$,]/g, '').trim();
+
+            if (cleanStr.endsWith('M') || cleanStr.endsWith('m')) {
+                // Convert $XM format to a number (millions)
+                const numPart = parseFloat(cleanStr.slice(0, -1));
+                return isNaN(numPart) ? null : numPart;
+            } else if (cleanStr.endsWith('K') || cleanStr.endsWith('k')) {
+                // Convert $XK format to a number (thousands)
+                const numPart = parseFloat(cleanStr.slice(0, -1));
+                return isNaN(numPart) ? null : numPart / 1000; 
+            } else {
+                // Try to parse as a direct number
+                const numPart = parseFloat(cleanStr);
+                return isNaN(numPart) ? null : numPart;
+            }
+        }
+
+        function addFilterRow(button) {
+            const filterGroup = document.getElementById('filterGroup1');
+            const newRow = document.createElement('div');
+            newRow.className = 'filter-row';
+            newRow.innerHTML = `
+                <select class="filter-select field-select" onchange="updateOperatorOptions(this)">
+                    <option value="">Select Field</option>
+                    <!-- Basic Information -->
+                    <option value="company">Company</option>
+                    <option value="first_name">First Name</option>
+                    <option value="last_name">Last Name</option>
+                    <option value="email">Email</                <option value="phone">Phone</option>
+                    <option value="title">Title</option>
+                    <option value="city">City</option>
+                    <option value="state">State</option>
+
+                    <!-- Company Details -->
+                    <option value="website">Website URL</option>
+                    <option value="linkedin_url">LinkedIn Profile</option>
+                    <option value="industry">Industry</option>
+                    <option value="revenue">Annual Revenue</option>
+                    <option value="product_service_category">Products/Services</option>
+                    <option value="business_type">Business Type</option>
+                    <option value="employees_range">Employee Range</option>
+                    <option value="year_founded">Year Founded</option>
+
+                    <!-- Owner Information -->
+                    <option value="owner_linkedin">Owner's LinkedIn</option>
+                    <option value="owner_age">Owner's Age Range</option>
+
+                    <!-- Scoring and Notes -->
+                    <option value="status">Status</option>
+                    <option value="additional_notes">Additional Notes</option>
+
+                    <!-- Email Customization -->
+                    <!-- <option value="subject_line_1">Email Subject (1st)</option> -->
+                    <!-- <option value="email_customization_1">Email Content (1st)</option> -->
+                    <!-- <option value="subject_line_2">Email Subject (2nd)</option> -->
+                    <!-- <option value="email_customization_2">Email Content (2nd)</option> -->
+
+                    <!-- LinkedIn Customization -->
+                    <!-- <option value="linkedin_customization_1">LinkedIn Message (1st)</option> -->
+                    <!-- <option value="linkedin_customization_2">LinkedIn Message (2nd)</option> -->
+
+                    <!-- Timestamps -->
+                    <option value="created_at">Created Date</option>
+                    <option value="updated_at">Last Updated</option>
+                </select>
+                <select class="filter-select operator-select">
+                    <option value="equals">Equals</option>
+                    <option value="contains">Contains</option>
+                    <option value="starts">Starts with</option>
+                    <option value="ends">Ends with</option>
+                    <option value="greater">Greater than</option>
+                    <option value="less">Less than</option>
+                </select>
+                <input type="text" class="filter-input value-input" placeholder="Enter value...">
+                <select class="filter-select logic-select">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                </select>
+                <button class="btn btn-sm btn-add-filter" onclick="addFilterRow(this)" title="Add another condition">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <button class="btn btn-sm btn-remove-filter" onclick="removeFilterRow(this)" title="Remove this condition">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            `;
+            filterGroup.appendChild(newRow);
+
+            // Initialize the operator options based on field type
+            updateOperatorOptions(newRow.querySelector('.field-select'));
+        }
+
+        // Function to update operator options based on selected field
+        function updateOperatorOptions(fieldSelect) {
+            const row = fieldSelect.closest('.filter-row');
+            const operatorSelect = row.querySelector('.operator-select');
+            const field = fieldSelect.value;
+
+            // Reset operator select
+            operatorSelect.innerHTML = '';
+
+            // Define operators based on field type
+            if (['revenue', 'year_founded', 'owner_age'].includes(field)) {
+                // Numeric fields
+                operatorSelect.innerHTML = `
+                    <option value="equals">Equals</option>
+                    <option value="greater">Greater than</option>
+                    <option value="less">Less than</option>
+                `;
+            } else if (['created_at', 'updated_at'].includes(field)) {
+                // Date fields
+                operatorSelect.innerHTML = `
+                    <option value="equals">Equals</option>
+                    <option value="greater">After</option>
+                    <option value="less">Before</option>
+                    <option value="contains">Contains</option>
+                `;
+            } else {
+                // Text fields (default)
+                operatorSelect.innerHTML = `
+                    <option value="equals">Equals</option>
+                    <option value="contains">Contains</option>
+                    <option value="starts">Starts with</option>
+                    <option value="ends">Ends with</option>
+                `;
+            }
+
+            // Update placeholder text for the value input
+            const valueInput = row.querySelector('.value-input');
+            if (['created_at', 'updated_at'].includes(field)) {
+                valueInput.placeholder = "YYYY-MM-DD";
+            } else if (field === 'revenue') {
+                valueInput.placeholder = "e.g. $5M or $500K";
+            } else if (['year_founded', 'owner_age'].includes(field)) {
+                valueInput.placeholder = "Enter number...";
+            } else {
+                valueInput.placeholder = "Enter value...";
+            }
+        }
+
+        // Add event listener to initialize operator options for the first row
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find the initial field select and set up its operator options
+            const initialFieldSelect = document.querySelector('.filter-row .field-select');
+            if (initialFieldSelect) {
+                initialFieldSelect.addEventListener('change', function() {
+                    updateOperatorOptions(this);
+                });
+            }
+
+            // Rest of the DOMContentLoaded code...
+        });
+
+        function removeFilterRow(button) {
+            const row = button.closest('.filter-row');
+            const filterGroup = row.parentElement;
+
+            // Only remove if there's more than one row
+            if (filterGroup.children.length > 1) {
+                row.remove();
+            } else {
+                // If it's the last row, just clear the values
+                row.querySelector('.field-select').value = '';
+                row.querySelector('.operator-select').value = 'equals';
+                row.querySelector('.value-input').value = '';
+                row.querySelector('.logic-select').value = 'AND';
+            }
+        }
+
+        // Pagination functionality
+        let rowsPerPage = 10; 
+        let currentPage = 1;
+
+        function setupPagination() {
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+            // Update total pages in existing pagination
+            document.getElementById('totalPages').textContent = totalPages;
+
+            // Show initial page
+            showPage(currentPage);
+        }
+
+        function changeRowsPerPage(value) {
+            rowsPerPage = value === 'all' ? 'all' : parseInt(value);
+            currentPage = 1; // Reset to first page
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(rows.length / rowsPerPage);
+
+            // Update total pages display
+            document.getElementById('totalPages').textContent = totalPages;
+
+            // Show first page with new rows per page setting
+            showPage(1);
+        }
+
+        function showPage(page) {
+            const table = document.getElementById('leadsTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(rows.length / rowsPerPage);
+
+            // Validate page number
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+
+            currentPage = page;
+
+            // Update page info
+            document.getElementById('currentPage').textContent = currentPage;
+
+            // Show/hide rows for current page
+            for (let i = 0; i < rows.length; i++) {
+                if (rowsPerPage === 'all') {
+                    rows[i].style.display = '';
+                } else if (i >= (page - 1) * rowsPerPage && i < page * rowsPerPage) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+
+            // Update button states
+            const prevButton = document.querySelector('.btn-pagination:first-child');
+            const nextButton = document.querySelector('.btn-pagination:last-child');
+            prevButton.disabled = page === 1;
+            nextButton.disabled = page === totalPages;
+
+            // Update total count display
+            const visibleRows = rowsPerPage === 'all' ? rows.length : 
+                              Math.min(rowsPerPage, rows.length - (currentPage - 1) * rowsPerPage);
+            const totalRows = rows.length;
+            document.getElementById('rowsInfo').textContent = 
+                `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${(currentPage - 1) * rowsPerPage + visibleRows} of ${totalRows} entries`;
+        }
+
+        function changePage(direction) {
+            showPage(currentPage + direction);
+        }
+
+        // Add pagination styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .pagination-container {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .btn-pagination {
+                padding: 8px 16px;
+                border: 1px solid var(--border-color);
+                background: white;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .btn-pagination:hover:not(:disabled) {
+                background: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+
+            .btn-pagination:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .page-info {
+                color: var(--dark-color);
+                font-size: 14px;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize pagination when document loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupPagination();
+            // ... existing DOMContentLoaded code ...
+        });
+
+        function clearAllFilters() {
+            // Reset all basic filter dropdowns
+            document.getElementById('companyFilter').value = '';
+            document.getElementById('locationFilter').value = '';
+            document.getElementById('roleFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('revenueFilter').value = '';
+
+            // Clear search input
+            document.getElementById('searchInput').value = '';
+
+            // Clear advanced filters
+            const advancedFilters = document.getElementById('advancedFilters');
+            if (advancedFilters) {
+                // Reset all filter rows to default state
+                const filterRows = advancedFilters.querySelectorAll('.filter-row');
+                filterRows.forEach((row, index) => {
+                    if (index === 0) {
+                        // Reset first row to default values
+                        row.querySelector('.field-select').value = '';
+                        row.querySelector('.operator-select').value = 'equals';
+                        row.querySelector('.value-input').value = '';
+                        row.querySelector('.logic-select').value = 'AND';
+                    } else {
+                        // Remove additional rows
+                        row.remove();
+                    }
+                });
+
+                // Hide advanced filters section
+                advancedFilters.classList.remove('show');
+                const toggleButton = document.querySelector('.toggle-advanced');
+                if (toggleButton) {
+                    toggleButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            // Apply filters to update the table
+            applyFilters();
+        }
+
+        function showExportFormatDialog() {
+            // Update the counts before showing the dialog
+            const selectedCount = document.querySelectorAll('.lead-checkbox:checked').length;
+            const visibleRows = document.querySelectorAll('#leadsTable tbody tr:not([style*="display: none"])').length;
+            const totalRows = document.querySelectorAll('#leadsTable tbody tr').length;
+
+            // Check if any filter is active
+            const isFilterActive = isAnyFilterActive();
+
+            // If no filter is active, show total rows instead of "filtered"
+            const filteredCount = isFilterActive ? visibleRows : totalRows;
+
+            if (document.getElementById('selectedCount')) {
+                document.getElementById('selectedCount').textContent = selectedCount;
+            }
+            if (document.getElementById('filteredCount')) {
+                document.getElementById('filteredCount').textContent = filteredCount;
+
+                // Update label text based on whether filters are active
+                const filteredLabel = document.querySelector('input[name="exportType"][value="filtered"]').closest('label').querySelector('div div:first-child');
+                if (filteredLabel) {
+                    filteredLabel.textContent = isFilterActive ? 'Filtered Leads' : 'All Leads';
+                }
+            }
+
+            // Set the appropriate default radio button
+            const selectedRadio = document.querySelector('input[name="exportType"][value="selected"]');
+            const filteredRadio = document.querySelector('input[name="exportType"][value="filtered"]');
+
+            if (selectedCount > 0) {
+                selectedRadio.checked = true;
+                // Highlight selected radio
+                selectedRadio.closest('label').style.borderColor = 'var(--primary-color)';
+                selectedRadio.closest('label').style.backgroundColor = '#eef2ff';
+                filteredRadio.closest('label').style.borderColor = '#e2e8f0';
+                filteredRadio.closest('label').style.backgroundColor = '#f8fafc';
+            } else {
+                filteredRadio.checked = true;
+                // Highlight filtered radio
+                filteredRadio.closest('label').style.borderColor = 'var(--primary-color)';
+                filteredRadio.closest('label').style.backgroundColor = '#eef2ff';
+                selectedRadio.closest('label').style.borderColor = '#e2e8f0';
+                selectedRadio.closest('label').style.backgroundColor = '#f8fafc';
+            }
+
+            // Add click event to radio buttons for highlighting
+            document.querySelectorAll('input[name="exportType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Reset all radio labels
+                    document.querySelectorAll('input[name="exportType"]').forEach(r => {
+                        r.closest('label').style.borderColor = '#e2e8f0';
+                        r.closest('label').style.backgroundColor = '#f8fafc';
+                    });
+
+                    // Highlight selected radio
+                    this.closest('label').style.borderColor = 'var(--primary-color)';
+                    this.closest('label').style.backgroundColor = '#eef2ff';
+                });
+            });
+
+            document.getElementById('exportFormatDialog').style.display = 'block';
+        }
+
+        function closeExportFormatDialog() {
+            document.getElementById('exportFormatDialog').style.display = 'none';
+        }
+
+        function exportLeads(format) {
+            const form = document.getElementById('exportForm');
+
+            // Add file format
+            let formatInput = document.createElement('input');
+            formatInput.type = 'hidden';
+            formatInput.name = 'file_format';
+            formatInput.value = format;
+            form.appendChild(formatInput);
+
+            // Get export type (selected or filtered)
+            const exportType = document.querySelector('input[name="exportType"]:checked').value;
+            let exportTypeInput = document.createElement('input');
+            exportTypeInput.type = 'hidden';
+            exportTypeInput.name = 'export_type';
+            exportTypeInput.value = exportType;
+            form.appendChild(exportTypeInput);
+
+            // If exporting filtered data, add current filter values
+            if (exportType === 'filtered') {
+                // Get current filter values
+                const companyFilter = document.getElementById('companyFilter').value;
+                const locationFilter = document.getElementById('locationFilter').value;
+                const roleFilter = document.getElementById('roleFilter').value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                const revenueFilter = document.getElementById('revenueFilter').value;
+                const searchInput = document.getElementById('searchInput').value;
+
+                // Add filter values as hidden inputs
+                if (companyFilter) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'company';
+                    input.value = companyFilter;
+                    form.appendChild(input);
+                }
+
+                if (locationFilter) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'location';
+                    input.value = locationFilter;
+                    form.appendChild(input);
+                }
+
+                if (roleFilter) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'role';
+                    input.value = roleFilter;
+                    form.appendChild(input);
+                }
+
+                if (statusFilter) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'status';
+                    input.value = statusFilter;
+                    form.appendChild(input);
+                }
+
+                if (revenueFilter) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'revenue';
+                    input.value = revenueFilter;
+                    form.appendChild(input);
+                }
+
+                if (searchInput) {
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'search';
+                    input.value = searchInput;
+                    form.appendChild(input);
+                }
+
+                // Add advanced filters if they exist (future implementation)
+            }
+
+            form.submit();
+            closeExportFormatDialog();
+        }
+
+        // Close dialog when clicking outside
+        window.onclick = function(event) {
+            const dialog = document.getElementById('exportFormatDialog');
+            if (event.target == dialog) {
+                closeExportFormatDialog();
+            }
+
+            const deleteDialog = document.getElementById('deleteConfirmDialog');
+            if (deleteDialog && event.target == deleteDialog) {
+                closeDeleteConfirmDialog();
+            }
+        }
+
+        // Function to confirm deletion of multiple leads
+        function confirmDeleteSelected() {
+            const selectedCheckboxes = document.querySelectorAll('.lead-checkbox:checked');
+            const selectedCount = selectedCheckboxes.length;
+
+            if (selectedCount === 0) {
+                return;
+            }
+
+            // Create confirmation dialog if it doesn't exist
+            let deleteDialog = document.getElementById('deleteConfirmDialog');
+
+            if (!deleteDialog) {
+                deleteDialog = document.createElement('div');
+                deleteDialog.id = 'deleteConfirmDialog';
+                deleteDialog.className = 'modal';
+                deleteDialog.style.display = 'none';
+                deleteDialog.style.position = 'fixed';
+                deleteDialog.style.zIndex = '1000';
+                deleteDialog.style.left = '0';
+                deleteDialog.style.top = '0';
+                deleteDialog.style.width = '100%';
+                deleteDialog.style.height = '100%';
+                deleteDialog.style.backgroundColor = 'rgba(0,0,0,0.5)';
+
+                const dialogContent = document.createElement('div');
+                dialogContent.className = 'modal-content';
+                dialogContent.style.backgroundColor = 'white';
+                dialogContent.style.margin = '15% auto';
+                dialogContent.style.padding = '24px';
+                dialogContent.style.borderRadius = '12px';
+                dialogContent.style.width = '400px';
+                dialogContent.style.position = 'relative';
+                dialogContent.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+
+                deleteDialog.appendChild(dialogContent);
+                document.body.appendChild(deleteDialog);
+            }
+
+            // Update dialog content
+            const dialogContent = deleteDialog.querySelector('.modal-content');
+            dialogContent.innerHTML = `
+                <h3 style="margin-top: 0; color: var(--danger-color); font-size: 24px; text-align: center; margin-bottom: 24px;">Confirm Deletion</h3>
+
+                <div style="margin: 20px 0; text-align: center;">
+                    <p style="font-size: 16px; margin-bottom: 20px;">Are you sure you want to delete ${selectedCount} selected lead${selectedCount !== 1 ? 's' : ''}?</p>
+                    <p style="font-size: 14px; color: #64748B; margin-bottom: 30px;">This action cannot be undone.</p>
+
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <button onclick="submitDeleteMultiple()" class="btn" style="background: var(--danger-color); color: white; padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease;">
+                            Yes, Delete
+                        </button>
+                        <button onclick="closeDeleteConfirmDialog()" class="btn" style="background: #f1f5f9; color: #475569; padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Show dialog
+            deleteDialog.style.display = 'block';
+        }
+
+        function closeDeleteConfirmDialog() {
+            const deleteDialog = document.getElementById('deleteConfirmDialog');
+            if (deleteDialog) {
+                deleteDialog.style.display = 'none';
+            }
+        }
+
+        function submitDeleteMultiple() {
+            document.getElementById('deleteMultipleForm').submit();
+            closeDeleteConfirmDialog();
+        }
+
+        // Display search history with optional filter text
+        function displaySearchHistory(filterText = '') {
+            const historyContainer = document.getElementById('searchHistory');
+            const searchHistory = getSearchHistory();
+
+            // Clear previous history items
+            historyContainer.innerHTML = '';
+
+            if (searchHistory.length === 0) {
+                // If no history, show a message
+                const noHistoryItem = document.createElement('div');
+                noHistoryItem.className = 'history-item no-results';
+                noHistoryItem.textContent = 'No search history';
+                historyContainer.appendChild(noHistoryItem);
+                return;
+            }
+
+            // Display all history items or filter them if filterText is provided
+            const itemsToShow = filterText.trim() 
+                ? searchHistory.filter(item => item.toLowerCase().includes(filterText.toLowerCase()))
+                : searchHistory;
+
+            itemsToShow.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+
+                // Create text span for the search term
+                const textSpan = document.createElement('span');
+                textSpan.className = 'history-item-text';
+                textSpan.textContent = item;
+                historyItem.appendChild(textSpan);
+
+                // Create delete button
+                const deleteBtn = document.createElement('span');
+                deleteBtn.className = 'delete-history-item';
+                deleteBtn.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                `;
+
+                // Add click event for delete button
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent the historyItem click event
+                    removeFromSearchHistory(item);
+                });
+
+                historyItem.appendChild(deleteBtn);
+
+                // Add click event for the history item
+                historyItem.addEventListener('click', function() {
+                    document.getElementById('searchInput').value = item;
+                    applyFilters();
+                    historyContainer.classList.remove('show');
+                });
+
+                historyContainer.appendChild(historyItem);
+            });
+
+            // Add clear all button
+            const clearButton = document.createElement('div');
+            clearButton.className = 'search-history-clear';
+            clearButton.textContent = 'Clear All History';
+            clearButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                clearSearchHistory();
+            });
+
+            historyContainer.appendChild(clearButton);
+        }
+
+        // Remove a specific item from search history
+        function removeFromSearchHistory(query) {
+            let history = getSearchHistory();
+
+            // Filter out the item to remove
+            history = history.filter(item => item !== query);
+
+            // Save updated history back to localStorage
+            localStorage.setItem('leadSearchHistory', JSON.stringify(history));
+
+            // Refresh the display
+            displaySearchHistory();
+        }
+
+        // Get search history from localStorage
+        function getSearchHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('leadSearchHistory') || '[]');
+                // If we have the old format with objects, extract just the queries
+                if (history.length > 0 && typeof history[0] === 'object' && history[0].query) {
+                    return history.map(item => item.query);
+                }
+                return history;
+            } catch (e) {
+                console.error('Error parsing search history:', e);
+                return [];
+            }
+        }
+
+        // Add a search query to history
+        function addToSearchHistory(query) {
+            if (!query || query.length < 3) return;
+
+            let history = getSearchHistory();
+
+            // Remove duplicates
+            history = history.filter(item => item.toLowerCase() !== query.toLowerCase());
+
+            // Add new query at the beginning
+            history.unshift(query);
+
+            // Limit to 10 items
+            if (history.length > 10) {
+                history = history.slice(0, 10);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('leadSearchHistory', JSON.stringify(history));
+
+            // Refresh the display
+            displaySearchHistory();
+        }
+
+        // Load search history
+        function loadSearchHistory() {
+        }
+
+        // Hide flash messages after 5 seconds (5000 ms)
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.success-message').forEach(function(msg) {
+                    msg.style.transition = 'opacity 0.5s';
+                    msg.style.opacity = 0;
+                    setTimeout(function() {
+                        msg.style.display = 'none';
+                    }, 500); // Wait for fade out
+                });
+            }, 5000); // 5 seconds
+        });
+    </script>
+{% endblock %}

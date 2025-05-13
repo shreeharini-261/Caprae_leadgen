@@ -1,0 +1,33 @@
+
+.price-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin: 1rem 0;
+}
+
+.features-list {
+  margin: 1.5rem 0;
+}
+
+.features-list p {
+  color: #4b5563;
+}
+
+.features-list p strong {
+  color: #1f2937;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}

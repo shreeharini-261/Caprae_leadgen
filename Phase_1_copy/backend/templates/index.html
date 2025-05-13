@@ -1,0 +1,731 @@
+{% extends "base.html" %}
+{% block title %}LeadGen - Smart Lead Generation Platform{% endblock %}
+
+{% block additional_styles %}
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4cc9f0;
+        --success-color: #4ad66d;
+        --text-color: #1e293b;
+        --light-text: #64748b;
+        --background-color: #f8fafc;
+        --card-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    .hero-section {
+        padding: 80px 20px;
+        text-align: center;
+        background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.1;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 60px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: white;
+        color: var(--primary-color);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary {
+        background: rgba(255,255,255,0.1);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+
+    .features-section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 60px;
+        color: var(--text-color);
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--background-color);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .feature-icon svg {
+        width: 24px;
+        height: 24px;
+        color: var(--primary-color);
+    }
+
+    .feature-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text-color);
+    }
+
+    .feature-description {
+        color: var(--light-text);
+        line-height: 1.6;
+    }
+    
+    /* Documentation section styles */
+    .documentation-section {
+        background-color: #f1f5f9;
+        padding: 80px 20px;
+        position: relative;
+    }
+    
+    .documentation-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .documentation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    
+    .doc-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+    
+    .doc-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    
+    .doc-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--background-color);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .doc-icon svg {
+        width: 24px;
+        height: 24px;
+        color: var(--primary-color);
+    }
+    
+    .doc-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text-color);
+    }
+    
+    .doc-description {
+        color: var(--light-text);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .doc-link {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 500;
+        color: var(--primary-color);
+        text-decoration: none;
+        gap: 6px;
+    }
+    
+    .doc-link:hover {
+        text-decoration: underline;
+    }
+    
+    /* About Us section styles */
+    .about-section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+    
+    .about-image {
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .about-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .about-text h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: var(--text-color);
+    }
+    
+    .about-text p {
+        color: var(--light-text);
+        margin-bottom: 20px;
+        line-height: 1.8;
+    }
+    
+    .mission-values {
+        margin-top: 30px;
+    }
+    
+    .value-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        gap: 16px;
+    }
+    
+    .value-icon {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        background: var(--background-color);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .value-icon svg {
+        width: 16px;
+        height: 16px;
+        color: var(--primary-color);
+    }
+    
+    .value-text h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text-color);
+    }
+    
+    .value-text p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .about-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .about-image {
+            order: -1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Streamline Your Lead Management</h1>
+            <p class="hero-subtitle">
+                An easy-to-use system for organizing, tracking, and managing your leads
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('lead.dashboard') }}" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <h2 class="section-title">Why Choose LeadGen?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Lead Management</h3>
+                <p class="feature-description">
+                    Easily store, track, and manage your leads with comprehensive filtering and search capabilities.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Bulk Import & Export</h3>
+                <p class="feature-description">
+                    Import leads from CSV files with column mapping and export selected leads in CSV or Excel format.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Status Tracking</h3>
+                <p class="feature-description">
+                    Track lead status through your sales pipeline and get a real-time dashboard view of your lead management metrics.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Documentation Section -->
+    <section class="documentation-section">
+        <div class="documentation-container">
+            <h2 class="section-title">Documentation</h2>
+            <div class="documentation-grid">
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">User Guide</h3>
+                    <p class="doc-description">
+                        Complete guide to using LeadGen for lead management, from setup to advanced features.
+                    </p>
+                    <a href="{{ url_for('main.user_docs') }}" class="doc-link">
+                        Read Guide
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">FAQ</h3>
+                    <p class="doc-description">
+                        Find answers to commonly asked questions about LeadGen features and functionality.
+                    </p>
+                    <a href="#faq" class="doc-link">
+                        View FAQs
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                
+                {% if current_user.is_authenticated and current_user.role in ['admin', 'developer'] %}
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="4 17 10 11 4 5"></polyline>
+                            <line x1="12" y1="19" x2="20" y2="19"></line>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">Admin Documentation</h3>
+                    <p class="doc-description">
+                        Technical documentation for administrators to manage the LeadGen system.
+                    </p>
+                    <a href="{{ url_for('main.admin_docs') }}" class="doc-link">
+                        View Admin Docs
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I import leads into the system?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can import leads by using our Bulk Import feature. Navigate to "Bulk Import" in the sidebar, upload your CSV file, and map your columns to the appropriate fields in our system. The system will then process your file and import valid leads.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What file formats are supported for importing leads?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Currently, the system supports CSV (Comma Separated Values) files for importing leads. Make sure your CSV file includes at least the required fields: Email and Phone number.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How can I export my leads?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To export leads, go to the Leads page, select the leads you want to export using the checkboxes, choose your preferred format (CSV or Excel), and click the "Export Selected" button.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I update lead status in bulk?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Currently, lead status must be updated individually. You can update a lead's status by selecting the appropriate status from the dropdown menu in the Actions column for that lead.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Who can add or delete leads?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Only users with Admin or Developer roles can add new leads individually or delete leads. Standard users can view leads, update their status, and export data.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I filter leads to find specific information?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can use the filtering options on the Leads page to narrow down your results. Filter by company, location, role/title, lead score, industry, business type, state, employee size, or revenue range to find specific leads.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        /* FAQ Section Styles */
+        .faq-section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .faq-container {
+            width: 100%;
+        }
+        
+        .faq-accordion {
+            margin-top: 40px;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+        
+        .faq-question h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+        
+        .faq-icon {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer {
+            padding: 0 24px;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer p {
+            padding-bottom: 20px;
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+        
+        .faq-item.active .faq-answer {
+            height: auto;
+            padding-top: 0;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ Accordion Functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Toggle active class on the clicked item
+                    item.classList.toggle('active');
+                    
+                    // Close other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            // Smooth scroll to FAQ when clicking the View FAQs link
+            const faqLink = document.querySelector('a[href="#faq"]');
+            if (faqLink) {
+                faqLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetSection = document.querySelector('#faq');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <h2 class="section-title">About Us</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>
+                    LeadGenDB is a lead management system designed to help businesses efficiently organize, track, and manage their leads. Our platform provides a centralized database for your lead information with tools for importing, filtering, and exporting data.
+                </p>
+                <p>
+                    Our team has developed this solution to address the common challenges in lead management by creating a simple yet powerful system that prioritizes ease of use and practical functionality.
+                </p>
+                
+                <div class="mission-values">
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="value-text">
+                            <h4>Simplicity</h4>
+                            <p>We focus on delivering a clean, intuitive interface that makes lead management straightforward and accessible.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="value-text">
+                            <h4>Efficiency</h4>
+                            <p>Our tools are designed to save you time with features like bulk import/export and quick filtering options.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="value-text">
+                            <h4>Organization</h4>
+                            <p>We help you keep your lead data structured and accessible, making it easier to manage your sales pipeline.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80" alt="Team collaboration">
+            </div>
+        </div>
+    </section>
+{% endblock %} 

@@ -1,0 +1,625 @@
+{% extends "base.html" %}
+{% block title %}User Documentation - LeadGen{% endblock %}
+
+{% block additional_styles %}
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4cc9f0;
+        --success-color: #4ad66d;
+        --text-color: #1e293b;
+        --light-text: #64748b;
+        --background-color: #f8fafc;
+        --card-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .docs-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .docs-header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .docs-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 16px;
+    }
+
+    .docs-subtitle {
+        font-size: 1.1rem;
+        color: var(--light-text);
+    }
+
+    .docs-nav {
+        display: flex;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 40px;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+    }
+
+    .docs-nav-item {
+        padding: 16px 20px;
+        color: var(--light-text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        flex: 1;
+        text-align: center;
+        border-bottom: 2px solid transparent;
+    }
+
+    .docs-nav-item:hover {
+        color: var(--primary-color);
+        background-color: var(--background-color);
+    }
+
+    .docs-nav-item.active {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .docs-section {
+        background-color: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .section-content {
+        color: var(--text-color);
+        line-height: 1.7;
+    }
+
+    .section-content p {
+        margin-bottom: 16px;
+    }
+
+    .section-content h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 32px 0 16px;
+        color: var(--text-color);
+    }
+
+    .section-content h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 24px 0 12px;
+        color: var(--text-color);
+    }
+
+    .step {
+        display: flex;
+        margin-bottom: 24px;
+    }
+
+    .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 16px;
+        flex-shrink: 0;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+
+    .step-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-color);
+    }
+
+    .step-description {
+        color: var(--light-text);
+    }
+
+    .tip {
+        background-color: #e6f7ff;
+        border-left: 4px solid var(--accent-color);
+        padding: 16px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .tip-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tip-title svg {
+        color: var(--accent-color);
+    }
+
+    .tip-content {
+        color: var(--text-color);
+    }
+
+    .image-container {
+        margin: 24px 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .image-caption {
+        padding: 12px;
+        background-color: #f8fafc;
+        color: var(--light-text);
+        font-size: 0.9rem;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    code {
+        font-family: monospace;
+        background-color: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .docs-nav {
+            flex-direction: column;
+            border-radius: 8px;
+        }
+
+        .docs-nav-item {
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            padding: 12px 16px;
+        }
+
+        .docs-nav-item.active {
+            border-left: 3px solid var(--primary-color);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .docs-section {
+            padding: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="docs-container">
+    <div class="docs-header">
+        <h1 class="docs-title">User Documentation</h1>
+        <p class="docs-subtitle">Learn how to use LeadGen effectively</p>
+    </div>
+
+    <nav class="docs-nav">
+        <a href="#dashboard" class="docs-nav-item">Dashboard</a>
+        <a href="#upload" class="docs-nav-item">Uploading Leads</a>
+        <a href="#search" class="docs-nav-item">Searching & Filtering</a>
+        <a href="#edit" class="docs-nav-item">Editing Leads</a>
+        <a href="#export" class="docs-nav-item">Exporting Data</a>
+    </nav>
+    
+    <div id="dashboard" class="docs-section">
+        <h2 class="section-title">Dashboard</h2>
+        <div class="section-content">
+            <p>
+                The dashboard provides an overview of your lead generation activities and key metrics at a glance.
+            </p>
+
+            <h3>Dashboard Features</h3>
+            <p>
+                From the dashboard, you can:
+            </p>
+            <ul>
+                <li>View total number of leads in the system</li>
+                <li>See lead status distribution</li>
+                <li>Access quick links to common actions like uploading leads or viewing leads</li>
+                <li>Monitor your lead management activities</li>
+            </ul>
+            
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    The dashboard is your starting point for all activities. Check it regularly to stay informed about your lead management activities.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="upload" class="docs-section">
+        <h2 class="section-title">Uploading Leads</h2>
+        <div class="section-content">
+            <p>
+                LeadGen makes it easy to upload your lead data. You can either import leads in bulk using a CSV file or add them one by one.
+            </p>
+
+            <h3>Bulk Upload with CSV</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Prepare Your CSV File</div>
+                    <div class="step-description">
+                        Ensure your CSV file has the correct format with appropriate column headers. 
+                        Required fields include: Email and Phone. Other fields like Name, Company, and Location are recommended.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Navigate to Upload Page</div>
+                    <div class="step-description">
+                        From the dashboard, click on "Bulk Import" in the sidebar or use the quick link on the dashboard.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Map CSV Columns</div>
+                    <div class="step-description">
+                        Upload your CSV file and map the required fields. Specify which columns in your CSV contain the Email, Phone, and Name data. You can also map additional fields as needed.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Review Results</div>
+                    <div class="step-description">
+                        After processing, you'll see a summary of the import results, including the number of leads added, skipped (duplicates), and any errors encountered.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    The system automatically detects duplicate entries based on email or phone number and will skip these rather than creating duplicates.
+                </div>
+            </div>
+
+            <h3>Adding Individual Leads</h3>
+            <p>
+                To add a single lead manually (Admin and Developer roles only):
+            </p>
+            <ol>
+                <li>Navigate to the "Single Import" page from the sidebar</li>
+                <li>Fill out the lead information form with necessary details</li>
+                <li>Click "Save" to add the lead to your database</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="search" class="docs-section">
+        <h2 class="section-title">Searching & Filtering Leads</h2>
+        <div class="section-content">
+            <p>
+                LeadGen provides powerful search and filtering capabilities to help you find specific leads quickly.
+            </p>
+
+            <h3>Basic Search</h3>
+            <p>
+                Use the search bar at the top of the Leads page to perform a quick search across all fields. This is useful for finding leads by name, email, company, or any other information.
+            </p>
+
+            <h3>Filtering</h3>
+            <p>
+                For more targeted searching, use the filtering options:
+            </p>
+
+            <h4>Basic Filters</h4>
+            <ul>
+                <li><strong>Company</strong> - Filter by company name</li>
+                <li><strong>Location</strong> - Filter by city or state</li>
+                <li><strong>Role/Title</strong> - Filter by job title or position</li>
+                <li><strong>Lead Score</strong> - Filter by assigned lead score</li>
+            </ul>
+
+            <h4>Advanced Filtering</h4>
+            <p>
+                Click the "Advanced Filters" button to access more powerful filtering options:
+            </p>
+            <ul>
+                <li><strong>Industry</strong> - Filter by industry sector</li>
+                <li><strong>Business Type</strong> - Filter by business model (B2B, B2C, etc.)</li>
+                <li><strong>State</strong> - Filter by specific state</li>
+                <li><strong>Employee Size</strong> - Filter by company size</li>
+                <li><strong>Revenue Range</strong> - Filter by company revenue</li>
+            </ul>
+
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    Combine multiple filters to narrow down your results even further. For example, search for leads in a specific industry AND with a particular employee size.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit" class="docs-section">
+        <h2 class="section-title">Editing Leads</h2>
+        <div class="section-content">
+            <p>
+                You can update lead information as you gather more data or need to make corrections.
+            </p>
+
+            <h3>Updating Lead Status</h3>
+            <p>
+                All users can update the lead status:
+            </p>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Find the Lead</div>
+                    <div class="step-description">
+                        Use the search and filter functions to locate the lead you want to update.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Change Status</div>
+                    <div class="step-description">
+                        Find the status dropdown in the Actions column for that lead and select the new status (New, Contacted, Qualified, Proposal, Closed).
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Save Changes</div>
+                    <div class="step-description">
+                        The change is automatically saved when you select a new status.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Editing Lead Details</h3>
+            <p>
+                Only Admin and Developer roles can edit full lead details:
+            </p>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Find the Lead</div>
+                    <div class="step-description">
+                        Use the search and filter functions to locate the lead you want to edit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Access Edit Mode</div>
+                    <div class="step-description">
+                        Click the "Edit" button in the Actions column for that lead.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Make Changes</div>
+                    <div class="step-description">
+                        Update the lead information in the edit form. You can modify fields like name, contact information, company details, and notes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Save Changes</div>
+                    <div class="step-description">
+                        Click the "Save" button to commit your changes to the database.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    Keep your lead status updated regularly to maintain an accurate pipeline view and ensure proper follow-up actions.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="export" class="docs-section">
+        <h2 class="section-title">Exporting Data</h2>
+        <div class="section-content">
+            <p>
+                LeadGen allows you to export your lead data for use in other systems or for reporting purposes.
+            </p>
+
+            <h3>Exporting Selected Leads</h3>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Select Leads</div>
+                    <div class="step-description">
+                        Use the checkboxes on the left side of the leads table to select the leads you want to export. 
+                        You can use the "Select All" checkbox at the top to select all leads that match your current search/filter criteria.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Choose Export Format</div>
+                    <div class="step-description">
+                        Select your preferred export format (CSV or Excel) from the dropdown menu.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Export Data</div>
+                    <div class="step-description">
+                        Click the "Export Selected" button to generate and download your export file.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Export Options</h3>
+            <p>
+                The system offers two export formats:
+            </p>
+            <ul>
+                <li><strong>CSV (Comma Separated Values)</strong> - A universal format that can be opened in any spreadsheet application or imported into other systems.</li>
+                <li><strong>Excel (.xlsx)</strong> - A native Microsoft Excel format that preserves formatting and is ideal for further analysis in Excel.</li>
+            </ul>
+
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    Use filters before exporting to create targeted export lists for specific campaigns or follow-up actions.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add smooth scrolling to navigation links
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.docs-nav-item');
+        
+        // Add click event listeners to nav items
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Get the target section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                // Smooth scroll to the section
+                targetSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active class
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Add scroll spy functionality
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.docs-section');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 200)) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            // Update active class based on scroll position
+            if (currentSection) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+        
+        // Set initial active state
+        if (navLinks.length > 0) {
+            navLinks[0].classList.add('active');
+        }
+    });
+</script>
+{% endblock %} 
