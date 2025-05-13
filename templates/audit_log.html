@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Audit Log{% endblock %}
+{% block additional_styles %}
+<style>
+    .container {
+        max-width: 100%;
+        padding: 20px;
+        background: #F7F9FC;
+    }
+    .table-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        overflow: auto;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        min-width: max-content;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: #f8f9fa;
+    }
+    th {
+        background: white;
+        padding: 16px;
+        text-align: left;
+        font-weight: 500;
+        color: #64748B;
+        border-bottom: 1px solid #E2E8F0;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    td {
+        padding: 16px;
+        border-bottom: 1px solid #E2E8F0;
+        color: #1E293B;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .truncate {
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .truncate:hover {
+        max-width: 500px;
+        white-space: normal;
+        background-color: #fffde7;
+        z-index: 10;
+        position: relative;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .date-col {
+        width: 180px;
+        text-align: center;
+        font-weight: 500;
+        background: #f8f9fa;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Audit Log</h1>
+    <form method="get" class="filters-container" style="margin-bottom: 24px;">
+        <div style="display: flex; gap: 16px; align-items: flex-end;">
+            <div>
+                <label>Changed By (username):</label>
+                <input type="text" name="username" value="{{ username }}" class="filter-input" placeholder="Username">
+            </div>
+            <div>
+                <label>Column Name:</label>
+                <input type="text" name="column" value="{{ column }}" class="filter-input" placeholder="Column">
+            </div>
+            <div>
+                <label>Show Last N:</label>
+                <input type="number" name="limit" value="{{ limit }}" min="1" max="1000" class="filter-input" style="width: 80px;">
+            </div>
+            <button type="submit" class="btn btn-apply-filter">Apply Filter</button>
+        </div>
+    </form>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Table</th>
+                    <th>Row ID</th>
+                    <th>Column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Username</th>
+                    <th class="date-col">Changed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.table_name }}</td>
+                    <td>{{ log.row_id }}</td>
+                    <td>{{ log.column_name }}</td>
+                    <td class="truncate" title="{{ log.old_value }}">{{ log.old_value }}</td>
+                    <td class="truncate" title="{{ log.new_value }}">{{ log.new_value }}</td>
+                    <td>{{ log.username }}</td>
+                    <td class="date-col">{{ log.changed_at.strftime('%Y-%m-%d %H:%M:%S') if log.changed_at else '-' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="8" style="text-align:center;">No audit log entries found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

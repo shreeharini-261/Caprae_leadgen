@@ -1,0 +1,691 @@
+{% extends "base.html" %}
+{% block title %}Admin Documentation - LeadGen{% endblock %}
+
+{% block additional_styles %}
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4cc9f0;
+        --success-color: #4ad66d;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --text-color: #1e293b;
+        --light-text: #64748b;
+        --background-color: #f8fafc;
+        --card-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .docs-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .docs-header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .docs-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 16px;
+    }
+
+    .docs-subtitle {
+        font-size: 1.1rem;
+        color: var(--light-text);
+    }
+
+    .admin-badge {
+        display: inline-block;
+        background-color: var(--warning-color);
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 50px;
+        margin-left: 12px;
+        vertical-align: middle;
+    }
+
+    .docs-nav {
+        display: flex;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 40px;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+    }
+
+    .docs-nav-item {
+        padding: 16px 20px;
+        color: var(--light-text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        flex: 1;
+        text-align: center;
+        border-bottom: 2px solid transparent;
+    }
+
+    .docs-nav-item:hover {
+        color: var(--primary-color);
+        background-color: var(--background-color);
+    }
+
+    .docs-nav-item.active {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .docs-section {
+        background-color: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .section-content {
+        color: var(--text-color);
+        line-height: 1.7;
+    }
+
+    .section-content p {
+        margin-bottom: 16px;
+    }
+
+    .section-content h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 32px 0 16px;
+        color: var(--text-color);
+    }
+
+    .section-content h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 24px 0 12px;
+        color: var(--text-color);
+    }
+
+    .step {
+        display: flex;
+        margin-bottom: 24px;
+    }
+
+    .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 16px;
+        flex-shrink: 0;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+
+    .step-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-color);
+    }
+
+    .step-description {
+        color: var(--light-text);
+    }
+
+    .warning {
+        background-color: #fff7ed;
+        border-left: 4px solid var(--warning-color);
+        padding: 16px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .warning-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .warning-title svg {
+        color: var(--warning-color);
+    }
+
+    .warning-content {
+        color: var(--text-color);
+    }
+
+    .tip {
+        background-color: #e6f7ff;
+        border-left: 4px solid var(--accent-color);
+        padding: 16px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .tip-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tip-title svg {
+        color: var(--accent-color);
+    }
+
+    .tip-content {
+        color: var(--text-color);
+    }
+
+    .image-container {
+        margin: 24px 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .image-caption {
+        padding: 12px;
+        background-color: #f8fafc;
+        color: var(--light-text);
+        font-size: 0.9rem;
+        text-align: center;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    code {
+        font-family: monospace;
+        background-color: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    table th {
+        background-color: #f8fafc;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .docs-nav {
+            flex-direction: column;
+            border-radius: 8px;
+        }
+
+        .docs-nav-item {
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            padding: 12px 16px;
+        }
+
+        .docs-nav-item.active {
+            border-left: 3px solid var(--primary-color);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .docs-section {
+            padding: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="docs-container">
+    <div class="docs-header">
+        <h1 class="docs-title">Admin Documentation <span class="admin-badge">Admin Only</span></h1>
+        <p class="docs-subtitle">Comprehensive guide for LeadGen system administrators</p>
+    </div>
+
+    <nav class="docs-nav">
+        <a href="#roles" class="docs-nav-item">User & Role Management</a>
+        <a href="#leads" class="docs-nav-item">Lead Management</a>
+        <a href="#api" class="docs-nav-item">API Documentation</a>
+    </nav>
+
+    <div id="roles" class="docs-section">
+        <h2 class="section-title">User & Role Management</h2>
+        <div class="section-content">
+            <p>
+                As an administrator, you have complete control over user accounts and role assignments. LeadGen 
+                uses a role-based access control system to determine what actions users can perform.
+            </p>
+
+            <h3>Understanding Roles</h3>
+            <p>
+                LeadGen has three predefined roles with different permission levels:
+            </p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Description</th>
+                        <th>Capabilities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>User</strong></td>
+                        <td>Standard user role</td>
+                        <td>Can view leads, update lead status, export data, and access the dashboard</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin</strong></td>
+                        <td>Administrative access</td>
+                        <td>All user capabilities plus user management, lead creation/editing/deletion capabilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Developer</strong></td>
+                        <td>Technical administrator</td>
+                        <td>All admin capabilities plus access to API functionalities</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Managing Users</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Access User Management</div>
+                    <div class="step-description">
+                        Navigate to the "User Management" section in the sidebar. This is only visible to users with Admin or Developer roles.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Create New Users</div>
+                    <div class="step-description">
+                        Click the "Create User" link in the sidebar or "Add User" button on the User Management page and fill out the required information:
+                        <ul>
+                            <li>Username</li>
+                            <li>Email Address</li>
+                            <li>Password and Confirmation</li>
+                            <li>Role Assignment</li>
+                            <li>Company (optional)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Update User Roles</div>
+                    <div class="step-description">
+                        From the User Management page, you can update roles for existing users:
+                        <ul>
+                            <li>Locate the user in the table</li>
+                            <li>Use the role dropdown to select a new role</li>
+                            <li>Submit the form to apply the change</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Delete Users</div>
+                    <div class="step-description">
+                        To remove a user from the system:
+                        <ul>
+                            <li>Locate the user in the table</li>
+                            <li>Click the "Delete" button</li>
+                            <li>Confirm the deletion when prompted</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <div class="warning-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Important
+                </div>
+                <div class="warning-content">
+                    You cannot delete your own account, and there must always be at least one active admin user in the system.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="leads" class="docs-section">
+        <h2 class="section-title">Lead Management</h2>
+        <div class="section-content">
+            <p>
+                As an admin, you have enhanced capabilities for managing leads in the system.
+            </p>
+
+            <h3>Creating Leads</h3>
+            <p>
+                Admin and Developer roles can manually add new leads to the system:
+            </p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Access the Lead Form</div>
+                    <div class="step-description">
+                        Click on "Single Import" in the sidebar navigation.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Fill Out Lead Details</div>
+                    <div class="step-description">
+                        Complete the form with the lead information. Required fields include:
+                        <ul>
+                            <li>Email and Phone (must be unique in the system)</li>
+                            <li>First name and Last name</li>
+                            <li>Company information (where applicable)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Submit the Form</div>
+                    <div class="step-description">
+                        Click "Save" to add the new lead to the database.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Editing and Deleting Leads</h3>
+            <p>
+                Only Admin and Developer roles can perform these actions:
+            </p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Editing Lead Information</div>
+                    <div class="step-description">
+                        From the Leads page, click the "Edit" button next to a lead to access the edit form. You can modify any field and save the changes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Deleting Leads</div>
+                    <div class="step-description">
+                        Only users with Admin role can delete leads. Click the "Delete" button next to a lead to remove it from the system.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Pro Tip
+                </div>
+                <div class="tip-content">
+                    Before deleting a lead, consider exporting it first to maintain a record in your external systems.
+                </div>
+            </div>
+
+            <h3>Bulk Import Management</h3>
+            <p>
+                For importing large numbers of leads at once:
+            </p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Prepare Your CSV File</div>
+                    <div class="step-description">
+                        Create a structured CSV file with columns for lead information. Email and Phone are required fields and must be unique.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Use Column Mapping</div>
+                    <div class="step-description">
+                        When uploading, map your CSV columns to the appropriate fields in the system. This ensures data is correctly imported.
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <div class="warning-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Important
+                </div>
+                <div class="warning-content">
+                    Duplicate entries (based on email or phone) will be skipped during import to prevent data duplication.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="api" class="docs-section">
+        <h2 class="section-title">API Documentation</h2>
+        <div class="section-content">
+            <p>
+                LeadGen provides API endpoints for programmatic access to lead data and functionality.
+                These endpoints require authentication and appropriate role permissions.
+            </p>
+
+            <h3>Available Endpoints</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Required Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>/api/leads</code></td>
+                        <td>GET</td>
+                        <td>Retrieve all leads in the system</td>
+                        <td>Any authenticated user</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/leads</code></td>
+                        <td>POST</td>
+                        <td>Create a new lead</td>
+                        <td>Admin or Developer</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/leads/{lead_id}</code></td>
+                        <td>PUT</td>
+                        <td>Update an existing lead</td>
+                        <td>Admin or Developer</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/leads/{lead_id}/status</code></td>
+                        <td>PUT</td>
+                        <td>Update lead status only</td>
+                        <td>Any authenticated user</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/upload_leads</code></td>
+                        <td>POST</td>
+                        <td>Bulk upload leads via JSON</td>
+                        <td>Any authenticated user</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Example API Usage</h3>
+            <p>
+                To create a new lead via the API:
+            </p>
+            <pre><code>
+POST /api/leads
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "+11234567890",
+  "company": "Example Corp",
+  "title": "Marketing Director"
+}
+            </code></pre>
+
+            <p>
+                To update a lead status:
+            </p>
+            <pre><code>
+PUT /api/leads/123/status
+Content-Type: application/json
+
+{
+  "status": "qualified"
+}
+            </code></pre>
+
+            <div class="warning">
+                <div class="warning-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Important
+                </div>
+                <div class="warning-content">
+                    All API requests require authentication. You must include valid authentication credentials with each request.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add smooth scrolling to navigation links
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.docs-nav-item');
+        
+        // Add click event listeners to nav items
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Get the target section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                // Smooth scroll to the section
+                targetSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active class
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Add scroll spy functionality
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.docs-section');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 200)) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            // Update active class based on scroll position
+            if (currentSection) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+        
+        // Set initial active state
+        if (navLinks.length > 0) {
+            navLinks[0].classList.add('active');
+        }
+    });
+</script>
+{% endblock %} 

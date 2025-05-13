@@ -1,0 +1,286 @@
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-12 18:10:01
+[2025-05-12 18:10:01] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-12 18:10:01] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-12 18:10:02] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-12 18:10:02] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-12 18:10:02] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-12 18:10:02] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-12 18:10:02] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-12 18:10:48
+[2025-05-12 18:10:48] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-12 18:10:48] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-12 18:10:49] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-12 18:12:01
+[2025-05-12 18:12:01] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-12 18:12:01] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-12 18:12:01] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-12 18:12:01] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-12 18:12:01] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-12 18:12:02] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-12 18:20:06
+[2025-05-12 18:20:06] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-12 18:20:06] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 01:19:04
+[2025-05-13 01:19:04] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 01:19:04] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 01:19:05] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20.csv at 2025-05-13 01:43:12
+[2025-05-13 01:43:12] test_data_20.csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 01:43:12] test_data_20.csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 01:43:12] test_data_20.csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 01:43:12] test_data_20.csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 01:43:12] test_data_20.csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 01:43:12] test_data_20.csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 01:43:12] test_data_20.csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 01:43:12] test_data_20.csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 01:43:12] test_data_20.csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 01:43:13] test_data_20.csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 01:43:13] test_data_20.csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 01:43:13] test_data_20.csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 01:43:13] test_data_20.csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 01:43:13] test_data_20.csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 01:43:13] test_data_20.csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 01:43:13] test_data_20.csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 01:43:13] test_data_20.csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 01:43:13] test_data_20.csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 01:43:13] test_data_20.csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 01:43:13] test_data_20.csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 02:44:07
+[2025-05-13 02:44:07] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 3: Duplicate entry found Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 4: Duplicate entry found Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 6: Duplicate entry found Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 7: Duplicate entry found Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 8: Duplicate entry found Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 9: Duplicate entry found Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 02:44:07] test_data_20(1).csv Row 10: Duplicate entry found Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 11: Duplicate entry found Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 02:44:08] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 02:49:19
+[2025-05-13 02:49:20] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 3: Duplicate entry found Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 4: Duplicate entry found Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 6: Duplicate entry found Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 7: Duplicate entry found Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 8: Duplicate entry found Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 9: Duplicate entry found Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 10: Duplicate entry found Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 11: Duplicate entry found Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 02:49:20] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20.csv at 2025-05-13 02:50:53
+[2025-05-13 02:50:53] test_data_20.csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 02:50:53] test_data_20.csv Row 3: Duplicate entry found Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 02:50:53] test_data_20.csv Row 4: Duplicate entry found Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 02:50:53] test_data_20.csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 02:50:53] test_data_20.csv Row 6: Duplicate entry found Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 02:50:53] test_data_20.csv Row 7: Duplicate entry found Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 02:50:53] test_data_20.csv Row 8: Duplicate entry found Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 02:50:53] test_data_20.csv Row 9: Duplicate entry found Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 02:50:53] test_data_20.csv Row 10: Duplicate entry found Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 02:50:53] test_data_20.csv Row 11: Duplicate entry found Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 02:50:53] test_data_20.csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 02:50:53] test_data_20.csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 02:50:53] test_data_20.csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 02:50:53] test_data_20.csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 02:50:53] test_data_20.csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 02:50:53] test_data_20.csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 02:50:53] test_data_20.csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 02:50:53] test_data_20.csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 02:50:54] test_data_20.csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 02:50:54] test_data_20.csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 03:10:30
+[2025-05-13 03:10:30] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 3: Duplicate entry found Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 4: Duplicate entry found Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 6: Duplicate entry found Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 7: Duplicate entry found Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 8: Duplicate entry found Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 9: Duplicate entry found Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 10: Duplicate entry found Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 11: Duplicate entry found Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 03:10:30] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 03:10:31] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 04:25:52
+[2025-05-13 04:25:52] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 04:25:52] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 04:25:53] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 04:42:47
+[2025-05-13 04:42:47] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 3: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 4: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 6: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 7: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 8: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 04:42:47] test_data_20(1).csv Row 9: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 10: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 11: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 14: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 15: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 16: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 04:42:48] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}
+================================================================================
+New Upload Session - File: test_data_20(1).csv at 2025-05-13 08:12:59
+[2025-05-13 08:12:59] test_data_20(1).csv Row 2: Invalid row: Missing or invalid required fields Data: {'name': 'Michael Thompson', 'email': 'michael.thompson@techsolutions.com', 'phone': None}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 3: Duplicate entry found Data: {'name': 'Sarah Johnson', 'email': 'sjohnson@datastream.io', 'phone': '6175552345'}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 4: Duplicate entry found Data: {'name': 'David', 'email': 'david@cloudsecure.net', 'phone': '5125556789'}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 5: Invalid row: Missing or invalid required fields Data: {'name': 'Jennifer Davis', 'email': None, 'phone': '5035554321'}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 6: Duplicate entry found Data: {'name': 'Robert', 'email': 'rgarcia@meditech-innovations.com', 'phone': '3125559876'}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 7: Duplicate entry found Data: {'name': 'Karen', 'email': 'karen@smartfactory.tech', 'phone': '3135552468'}
+[2025-05-13 08:12:59] test_data_20(1).csv Row 8: Duplicate entry found Data: {'name': 'Thomas Williams', 'email': 's@finsecure.com', 'phone': '2125557531'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 9: Duplicate entry found Data: {'name': 'Amanda Lopez', 'email': 'amanda@edtechaccelerate.com', 'phone': '2065559753'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 10: Duplicate entry found Data: {'name': 'James Taylor', 'email': 'jtaylor@logisticspro.net', 'phone': '4045553690'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 11: Duplicate entry found Data: {'name': 'Emily Martinez', 'email': 'emartinez@agrotech.io', 'phone': '3035558024'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 12: Invalid row: Missing or invalid required fields Data: {'name': 'Daniel 43', 'email': 'daniel@hrtec', 'phone': '6125554680'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 13: Invalid row: Missing or invalid required fields Data: {'name': 'Sophia Rodriguez', 'email': 'srodriguez@retailtech.com', 'phone': None}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 14: Duplicate entry found Data: {'name': 'Andrew Kim', 'email': 'andrew@quantumcomputinglabs.ai', 'phone': '5105559024'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 15: Duplicate entry found Data: {'name': 'Lisa Singh', 'email': 'lisa@cleanenergysystems.com', 'phone': '6025557531'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 16: Duplicate entry found Data: {'name': 'Jonathan Patel', 'email': 'jonathan@urbanmobility.tech', 'phone': '2135554829'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 17: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Rachel Lewis', 'email': 'rachel@biotechinnovations.com', 'phone': '6175558642'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 18: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Kevin Nguyen', 'email': 'kevin@industrialautomation.pro', 'phone': '4125559371'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 19: Invalid row: Missing or invalid required fields Data: {'name': 'Michelle Brown', 'email': 'michelle@co.34sdf.com', 'phone': None}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 20: Database error: type object 'Lead' has no attribute 'truncate_fields' Data: {'name': 'Richard Chen', 'email': 'richard@healthwellness.systems', 'phone': '6155557890'}
+[2025-05-13 08:13:00] test_data_20(1).csv Row 21: Invalid row: Missing or invalid required fields Data: {'name': 'Jessica Wilson', 'email': 'jessica@cloudcompute.enterprise', 'phone': None}

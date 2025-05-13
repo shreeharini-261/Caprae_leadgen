@@ -1,0 +1,75 @@
+
+<div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="subscriptionModalLabel">Upgrade Your Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Your Free plan has limited access. Upgrade to unlock more leads and features.</p>
+        <p class="alert alert-info" id="subscriptionMessage"></p>
+        
+        <div class="row g-4">
+          <!-- Bronze Tier -->
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Bronze</h5>
+                <h6 class="price-text">$5/month</h6>
+                <div class="features-list">
+                  <p class="mb-1"><strong>50</strong> Leads</p>
+                  <p class="mb-1">CSV Export</p>
+                  <p class="mb-1">Basic Filters</p>
+                </div>
+                <button class="btn btn-outline-primary w-100 mt-3" onclick="selectPlan('bronze')">Choose Bronze</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Silver Tier -->
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Silver</h5>
+                <h6 class="price-text">$10/month</h6>
+                <div class="features-list">
+                  <p class="mb-1"><strong>100</strong> Leads</p>
+                  <p class="mb-1">CSV Export</p>
+                  <p class="mb-1">Basic Filters</p>
+                  <p class="mb-1">Phone Numbers</p>
+                </div>
+                <button class="btn btn-outline-primary w-100 mt-3" onclick="selectPlan('silver')">Choose Silver</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gold Tier -->
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-primary">
+              <div class="card-header bg-primary text-white text-center py-2">
+                Recommended
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Gold</h5>
+                <h6 class="price-text">$20/month</h6>
+                <div class="features-list">
+                  <p class="mb-1"><strong>Unlimited</strong> Leads</p>
+                  <p class="mb-1">CSV Export</p>
+                  <p class="mb-1">Advanced Filters</p>
+                  <p class="mb-1">Phone Numbers</p>
+                  <p class="mb-1">API Access</p>
+                  <p class="mb-1">Priority Support</p>
+                </div>
+                <button class="btn btn-primary w-100 mt-3" onclick="selectPlan('gold')">Choose Gold</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue with Free (10 leads)</button>
+      </div>
+    </div>
+  </div>
+</div>

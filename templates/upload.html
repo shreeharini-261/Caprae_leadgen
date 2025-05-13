@@ -1,0 +1,1002 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Leads{% endblock %}
+
+{% block additional_styles %}
+<style>
+  :root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4cc9f0;
+    --success-color: #4ad66d;
+    --danger-color: #f72585;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  h1 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 2px;
+  }
+
+  .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card-body {
+    padding: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-control {
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+  }
+
+  .form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+    outline: none;
+    background-color: white;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .btn-outline-primary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .alert {
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    animation: fadeInDown 0.5s;
+  }
+
+  .alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-color: #43a047;
+  }
+
+  .alert-danger {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #e53935;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .custom-file-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    gap: 10px;
+  }
+
+  .custom-file-button:hover {
+    background-color: #f1f3f5;
+    border-color: var(--accent-color);
+  }
+
+  .file-info {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .button-group .btn {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .pulse-animation {
+    animation: pulse 2s infinite;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+      margin: 30px auto;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+
+    .button-group .btn {
+      width: 100%;
+    }
+  }
+
+  /* Custom Fields Section Styling */
+  #customFieldsContainer .row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  #customFieldsContainer .col {
+    flex: 1 1 0;
+    min-width: 180px;
+    margin-right: 10px;
+  }
+  #customFieldsContainer .col:last-child {
+    margin-right: 0;
+  }
+  #customFieldsContainer .form-select,
+  #customFieldsContainer .form-control {
+    height: 44px;
+    font-size: 1rem;
+  }
+  #customFieldsContainer .remove-custom-field {
+    height: 44px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* CSV Headers display */
+  #csvHeadersList {
+    display: none !important;
+  }
+  
+  /* Column Mapping Styling */
+  .column-mapping {
+    margin-bottom: 25px;
+    display: none;
+  }
+  .mapping-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: #f8fbfd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .mapping-row:hover {
+    background-color: #f0f7fc;
+  }
+  .csv-column {
+    flex: 1;
+    padding: 8px 12px;
+    font-weight: 500;
+    color: #444;
+    font-size: 16px;
+  }
+  .db-column {
+    flex: 1;
+    padding: 0 10px;
+  }
+  .required-field {
+    background-color: #e8f4fd;
+    border-left: 3px solid var(--primary-color);
+  }
+  .required-field .csv-column {
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  .mapping-title {
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  .column-labels {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 0 10px;
+  }
+  .column-label {
+    flex: 1;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  /* Adjust form-select style to match the screenshot */
+  .mapping-row .form-select {
+    border-radius: 8px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    background-color: white;
+    font-size: 16px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="animate__animated animate__fadeIn">Upload Leads</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} animate__animated animate__fadeInDown">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            {% if category == 'success' %}
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            {% else %}
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            {% endif %}
+                        </svg>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card animate__animated animate__fadeInUp">
+            <div class="card-body">
+                <form action="{{ url_for('lead.upload_csv') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="form-group">
+                        <label for="file" class="form-label">CSV File</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="form-control" id="file" name="file" accept=".csv" required onchange="previewFile()">
+                            <div class="custom-file-button">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Choose CSV File
+                            </div>
+                        </div>
+                        <div class="file-info" id="fileName">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            No file selected
+                        </div>
+                    </div>
+                    
+                    <div id="csvHeadersList">
+                        <div class="headers-title">Available CSV Headers:</div>
+                        <ul id="headersList"></ul>
+                    </div>
+
+                    <div id="columnMapping" class="column-mapping">
+                        <div class="mapping-title">Map CSV Columns to Database Fields</div>
+                        
+                        <!-- Dynamic mappings will be added here -->
+                        <div id="dynamicMappings"></div>
+                    </div>
+
+                    <!-- Hidden container for custom fields -->
+                    <div id="customFieldsContainer" style="display: none;"></div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary pulse-animation">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Upload
+                        </button>
+                        <a href="{{ url_for('lead.view_leads') }}" class="btn btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            View Leads
+                        </a>
+                        <a href="{{ url_for('lead.form') }}" class="btn btn-outline-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 5v14M5 12h14"></path>
+                            </svg>
+                            Manual Entry
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewFile() {
+            const fileInput = document.getElementById('file');
+            const fileName = document.getElementById('fileName');
+
+            if (fileInput.files.length > 0) {
+                fileName.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    Selected file: <strong>${fileInput.files[0].name}</strong> (${(fileInput.files[0].size / 1024).toFixed(2)} KB)
+                `;
+                
+                // Parse CSV and display headers
+                parseCsvHeaders(fileInput.files[0]);
+            } else {
+                fileName.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    No file selected
+                `;
+                
+                // Hide CSV headers list
+                document.getElementById('csvHeadersList').style.display = 'none';
+            }
+        }
+        
+        function parseCsvHeaders(file) {
+            // First try as binary to check for encoding issues
+            const binaryReader = new FileReader();
+            binaryReader.onload = function(e) {
+                try {
+                    // Try to detect encoding from binary content
+                    // This is just a simple check, a more sophisticated solution might be needed
+                    const binary = new Uint8Array(e.target.result);
+                    let encoding = 'utf-8';
+                    
+                    // Check for BOM markers and other encoding hints
+                    if (binary.length >= 3 && binary[0] === 0xEF && binary[1] === 0xBB && binary[2] === 0xBF) {
+                        encoding = 'utf-8'; // UTF-8 with BOM
+                    } else if (binary.length >= 2 && binary[0] === 0xFF && binary[1] === 0xFE) {
+                        encoding = 'utf-16le'; // UTF-16 LE
+                    } else if (binary.length >= 2 && binary[0] === 0xFE && binary[1] === 0xFF) {
+                        encoding = 'utf-16be'; // UTF-16 BE
+                    } else if (binary.some(b => b > 127)) {
+                        // If there are non-ASCII characters, try latin1/ISO-8859-1 which can handle all byte values
+                        encoding = 'iso-8859-1';
+                    }
+                    
+                    // Now read the file with the detected encoding
+                    const textReader = new FileReader();
+                    textReader.onload = function(textEvent) {
+                        processCsvContent(textEvent.target.result);
+                    };
+                    textReader.onerror = function() {
+                        // If the detected encoding fails, fall back to ISO-8859-1 (latin1)
+                        const fallbackReader = new FileReader();
+                        fallbackReader.onload = function(fallbackEvent) {
+                            processCsvContent(fallbackEvent.target.result);
+                        };
+                        fallbackReader.readAsText(file, 'iso-8859-1');
+                    };
+                    
+                    // Try with the detected encoding
+                    textReader.readAsText(file, encoding);
+                } catch (error) {
+                    console.error("Error analyzing file:", error);
+                    // Fall back to ISO-8859-1 which can handle any byte value
+                    const fallbackReader = new FileReader();
+                    fallbackReader.onload = function(fallbackEvent) {
+                        processCsvContent(fallbackEvent.target.result);
+                    };
+                    fallbackReader.readAsText(file, 'iso-8859-1');
+                }
+            };
+            binaryReader.readAsArrayBuffer(file);
+            
+            // Function to process the CSV content regardless of how it was loaded
+            function processCsvContent(contents) {
+                try {
+                    const lines = contents.split('\n');
+                    
+                    if (lines.length > 0) {
+                        // Parse the first line to get headers
+                        let headers;
+                        // Check if the file uses quotes for headers
+                        if (lines[0].includes('"')) {
+                            headers = lines[0].match(/(?:\"([^\"]*?)\"(?:,|$)|([^,]*?)(?:,|$))/g)
+                                .map(h => h.replace(/[",\n\r]/g, '').trim())
+                                .filter(h => h !== '');
+                        } else {
+                            headers = lines[0].split(',').map(h => h.trim());
+                        }
+                        
+                        // Update available headers for custom fields
+                        updateAvailableCsvHeaders(headers);
+                        
+                        // Hide csvHeadersList section completely
+                        const csvHeadersList = document.getElementById('csvHeadersList');
+                        if (csvHeadersList) {
+                            csvHeadersList.style.display = 'none';
+                        }
+                        
+                        // Show column mapping interface
+                        document.getElementById('columnMapping').style.display = 'block';
+                        
+                        // Create dynamic mappings for CSV columns
+                        createDynamicMappings(headers);
+                        
+                        // Try to find likely matches
+                        autoMatchColumns();
+                    }
+                } catch (error) {
+                    console.error("Error processing CSV content:", error);
+                    alert("There was an issue processing the CSV file. The file may have format issues, but the upload will still be attempted.");
+                }
+            }
+        }
+        
+        function displayHeaders(headers) {
+            // Function kept for compatibility but we're not displaying the headers list
+            // Update available headers for custom fields
+            updateAvailableCsvHeaders(headers);
+        }
+        
+        function populateColumnSelects(headers) {
+            // Get all column select dropdowns
+            const selects = document.querySelectorAll('#columnMapping select');
+            
+            // Clear and populate each dropdown with all headers
+            selects.forEach(select => {
+                // Keep only the first option (placeholder)
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add all headers as options
+                headers.forEach(header => {
+                    const option = document.createElement('option');
+                    option.value = header;
+                    option.textContent = header;
+                    select.appendChild(option);
+                });
+            });
+        }
+        
+        function createDynamicMappings(headers) {
+            const dynamicMappings = document.getElementById('dynamicMappings');
+            dynamicMappings.innerHTML = ''; // Clear existing mappings
+            
+            // Define fields we want to hide
+            const hiddenFields = ['score', 'reasoning', 'email_customization_1', 'subject_line_1', 
+                                'email_customization_2', 'subject_line_2', 'linkedin_customization_1', 
+                                'linkedin_customization_2'];
+            
+            // Filter out CSV headers that match our hidden fields patterns
+            const filteredHeaders = headers.filter(header => {
+                // Check if this header matches any of our hidden field patterns
+                const matchesHiddenPattern = 
+                    header.toLowerCase().includes('score') ||
+                    header.toLowerCase().includes('reasoning') ||
+                    header.toLowerCase().includes('r/y/g') ||
+                    header.toLowerCase().includes('email customization') ||
+                    header.toLowerCase().includes('subject line') ||
+                    header.toLowerCase().includes('linkedin customization');
+                
+                // Keep headers that don't match hidden patterns
+                return !matchesHiddenPattern;
+            });
+            
+            // Create a mapping row for each filtered CSV header
+            filteredHeaders.forEach((header, index) => {
+                const row = document.createElement('div');
+                row.className = 'mapping-row';
+                
+                const csvColumn = document.createElement('div');
+                csvColumn.className = 'csv-column';
+                csvColumn.textContent = header;
+                
+                const dbColumn = document.createElement('div');
+                dbColumn.className = 'db-column';
+                
+                const select = document.createElement('select');
+                select.name = `field_mapping_${index}`;
+                select.className = 'form-select';
+                select.setAttribute('data-csv-header', header);
+                
+                // Add default empty option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Database Field';
+                select.appendChild(defaultOption);
+                
+                // Add all database fields
+                allLeadFields.forEach(field => {
+                    
+                    if (hiddenFields.includes(field.name)) {
+                        return; 
+                    }
+                    
+                    const option = document.createElement('option');
+                    option.value = field.name;
+                    option.textContent = field.label;
+                    
+                    // Auto-select if the field name matches the CSV header
+                    if (field.name.toLowerCase() === header.toLowerCase() || 
+                        field.label.toLowerCase() === header.toLowerCase()) {
+                        option.selected = true;
+                    }
+                    
+                    select.appendChild(option);
+                });
+                
+                // Special cases for required fields
+                // if (header.toLowerCase().includes('name') && !header.toLowerCase().includes('first') && !header.toLowerCase().includes('last')) {
+                //     // For full name field
+                //     select.value = 'full_name';
+                    // const nameInput = document.createElement('input');
+                    // nameInput.type = 'hidden';
+                    // nameInput.name = 'name_column';
+                    // nameInput.value = header;
+                    // dbColumn.appendChild(nameInput);
+                if (header.toLowerCase().includes('email')) {
+                    // For email field
+                    select.value = 'email';
+                    const emailInput = document.createElement('input');
+                    emailInput.type = 'hidden';
+                    emailInput.name = 'email_column';
+                    emailInput.value = header;
+                    dbColumn.appendChild(emailInput);
+                } else if (header.toLowerCase().includes('phone') || header.toLowerCase() === 'ph') {
+                    // For phone field
+                    select.value = 'phone';
+                    const phoneInput = document.createElement('input');
+                    phoneInput.type = 'hidden';
+                    phoneInput.name = 'phone_column';
+                    phoneInput.value = header;
+                    dbColumn.appendChild(phoneInput);
+                }
+                
+                dbColumn.appendChild(select);
+                
+                row.appendChild(csvColumn);
+                row.appendChild(dbColumn);
+                
+                dynamicMappings.appendChild(row);
+                
+                // Add change event listener to update selection and create hidden fields
+                select.addEventListener('change', function() {
+                    updateFieldSelection(this);
+                    updateAvailableOptions();
+                });
+            });
+            
+            // Initialize the selected values and update available options
+            document.querySelectorAll('#dynamicMappings select').forEach(select => {
+                updateFieldSelection(select);
+            });
+            updateAvailableOptions();
+            
+            // Add compatibility inputs to the form
+            addCompatibilityInputs();
+        }
+        
+        function updateFieldSelection(select) {
+            const csvHeader = select.getAttribute('data-csv-header');
+            const selectedValue = select.value;
+            const dbColumn = select.parentNode;
+            
+            // Remove any existing hidden inputs for special fields
+            const existingInputs = dbColumn.querySelectorAll('input[type="hidden"]');
+            existingInputs.forEach(input => {
+                if (input.name === 'name_column' || input.name === 'email_column' || input.name === 'phone_column') {
+                    input.remove();
+                }
+            });
+            
+            // Create hidden inputs for required fields
+            // if (selectedValue === 'full_name') {
+            //     const nameInput = document.createElement('input');
+            //     nameInput.type = 'hidden';
+            //     nameInput.name = 'name_column';
+            //     nameInput.value = csvHeader;
+            //     dbColumn.appendChild(nameInput);
+            if (selectedValue === 'first_name') {
+                const firstNameInput = document.createElement('input');
+                firstNameInput.type = 'hidden';
+                firstNameInput.name = 'first_name_column';
+                firstNameInput.value = csvHeader;
+                dbColumn.appendChild(firstNameInput);
+            } else if (selectedValue === 'last_name') {
+                const lastNameInput = document.createElement('input');
+                lastNameInput.type = 'hidden';
+                lastNameInput.name = 'last_name_column';
+                lastNameInput.value = csvHeader;
+                dbColumn.appendChild(lastNameInput);
+            } else if (selectedValue === 'email') {
+                const emailInput = document.createElement('input');
+                emailInput.type = 'hidden';
+                emailInput.name = 'email_column';
+                emailInput.value = csvHeader;
+                dbColumn.appendChild(emailInput);
+            } else if (selectedValue === 'phone') {
+                const phoneInput = document.createElement('input');
+                phoneInput.type = 'hidden';
+                phoneInput.name = 'phone_column';
+                phoneInput.value = csvHeader;
+                dbColumn.appendChild(phoneInput);
+            }
+            
+            // For other fields, we'll collect them on form submit  
+        }
+        
+        function addCompatibilityInputs() {
+            const form = document.getElementById('uploadForm');
+            
+            // Event listener to create the dynamic field inputs before submission
+            form.addEventListener('submit', function(e) {
+                // Create dynamic field inputs for the selections made
+                const dynamicSelects = document.querySelectorAll('#dynamicMappings select');
+                const customFieldsContainer = document.getElementById('customFieldsContainer');
+                customFieldsContainer.innerHTML = ''; // Clear existing fields
+                
+                // Collect all mappings, including dynamic fields
+                const dynamicFields = [];
+                
+                dynamicSelects.forEach(select => {
+                    const selectedValue = select.value;
+                    const csvHeader = select.getAttribute('data-csv-header');
+                    
+                    // if (selectedValue === 'full_name') {
+                    //     // For full name, we need to create a name_column input
+                    //     const nameInput = document.createElement('input');
+                    //     nameInput.type = 'hidden';
+                    //     nameInput.name = 'name_column';
+                    //     nameInput.value = csvHeader;
+                    //     customFieldsContainer.appendChild(nameInput);
+                    if (selectedValue === 'first_name') {
+                        // For first name
+                        const firstNameInput = document.createElement('input');
+                        firstNameInput.type = 'hidden';
+                        firstNameInput.name = 'first_name_column';
+                        firstNameInput.value = csvHeader;
+                        customFieldsContainer.appendChild(firstNameInput);
+                    } else if (selectedValue === 'last_name') {
+                        // For last name
+                        const lastNameInput = document.createElement('input');
+                        lastNameInput.type = 'hidden';
+                        lastNameInput.name = 'last_name_column';
+                        lastNameInput.value = csvHeader;
+                        customFieldsContainer.appendChild(lastNameInput);
+                    } else if (selectedValue === 'email') {
+                        // For email field
+                        const emailInput = document.createElement('input');
+                        emailInput.type = 'hidden';
+                        emailInput.name = 'email_column';
+                        emailInput.value = csvHeader;
+                        customFieldsContainer.appendChild(emailInput);
+                    } else if (selectedValue === 'phone') {
+                        // For phone field
+                        const phoneInput = document.createElement('input');
+                        phoneInput.type = 'hidden';
+                        phoneInput.name = 'phone_column';
+                        phoneInput.value = csvHeader;
+                        customFieldsContainer.appendChild(phoneInput);
+                    } else if (selectedValue && 
+                        selectedValue !== 'email' && 
+                        selectedValue !== 'phone') {
+                        
+                        // For custom fields
+                        dynamicFields.push({
+                            name: selectedValue,
+                            value: csvHeader
+                        });
+                        
+                        const nameInput = document.createElement('input');
+                        nameInput.type = 'hidden';
+                        nameInput.name = 'dynamic_field_name[]';
+                        nameInput.value = selectedValue;
+                        
+                        const valueInput = document.createElement('input');
+                        valueInput.type = 'hidden';
+                        valueInput.name = 'dynamic_field_value[]';
+                        valueInput.value = csvHeader;
+                        
+                        customFieldsContainer.appendChild(nameInput);
+                        customFieldsContainer.appendChild(valueInput);
+                    }
+                });
+                
+                // Add all dynamic fields as a JSON field for better handling
+                const dynamicFieldsInput = document.createElement('input');
+                dynamicFieldsInput.type = 'hidden';
+                dynamicFieldsInput.name = 'dynamic_fields_json';
+                dynamicFieldsInput.value = JSON.stringify(dynamicFields);
+                customFieldsContainer.appendChild(dynamicFieldsInput);
+                
+                // Remove validation for required fields - as requested by user
+                // Just let the form submit regardless of mapping
+            });
+        }
+        
+        function autoMatchColumns() {
+            // Auto-match fields based on name patterns
+            const fieldPatterns = {
+                // "full_name": ["name", "full name", "full_name", "customer name", "contact", "name"],
+                "first_name": ["first name", "fname", "first", "first name"],
+                "last_name": ["last name", "lname", "last", "last name"],
+                "email": ["email", "e-mail", "mail", "contact email", "g-mail", "email address"],
+                "phone": ["phone", "telephone", "contact number", "mobile", "cell", "phone number", "phone number"],
+                "company": ["company", "business", "organization", "company name"],
+                "title": ["title", "job title", "position", "job position"],
+                "city": ["city", "town", "location"],
+                "state": ["state", "province", "region", "state/province"],
+                "website": ["website", "web", "url", "site"],
+                "industry": ["industry", "sector", "field", "industry sector"],
+                "linkedin_url": ["LinkedIn URL", "linkedin profile", "linkedin url", "linkedin profile"],
+                "revenue": ["revenue", "annual revenue", "yearly revenue", "revenue range"],
+                "business_type": ["Business Type (B2B B2B2C)","business type", "company type", "organization type", "business type"],
+                "product_service_category": ["product", "service", "category", "product/service", "product category", "product/service category"],
+                "associated_members": ["associated", "member", "associate", "team member", "associated members"],
+                "employees_range": ["employees", "employee count", "staff", "team size", "headcount", "employee range"],
+                "rev_source": ["rev source", "revenue source", "income source", "revenue stream"],
+                "year_founded": ["founded", "established", "year founded", "start year"],
+                "owner_linkedin": ["owner's linkedin", "founder linkedin", "ceo linkedin"],
+                "owner_age": ["owner age", "founder age", "ceo age"],
+                "additional_notes": ["notes", "comment", "additional notes", "remark", "observation"],
+                // Remove the fields as requested
+                // "score": ["score", "rating", "rank", "grade"],
+                // "reasoning": ["reasoning", "reason", "explanation", "justification"],
+                // "email_customization_1": ["Email customization #1", "email template", "email 1", "first email", "email personalization"],
+                // "subject_line_1": ["subject line #1", "subject #1", "email subject", "first subject"],
+                // "email_customization_2": ["Email customization #2", "follow up email", "second email", "email 2"],
+                // "subject_line_2": ["subject line #2", "subject 2", "follow up subject", "second subject"],
+                // "linkedin_customization_1": ["linkedin customization #1", "linkedin message", "linkedin 1", "first linkedin", "linkedin custom"],
+                // "linkedin_customization_2": ["linkedin customization #2", "follow up linkedin", "second linkedin", "linkedin 2"]
+            };
+            
+            // Get all select dropdowns
+            const allSelects = document.querySelectorAll('#dynamicMappings select');
+            
+            // For each select dropdown
+            allSelects.forEach(select => {
+                const csvHeader = select.getAttribute('data-csv-header');
+                
+                // Try to find a matching field pattern
+                let matchFound = false;
+                
+                Object.entries(fieldPatterns).forEach(([fieldName, patterns]) => {
+                    if (!matchFound && patterns.some(pattern => 
+                        csvHeader.toLowerCase().includes(pattern.toLowerCase()))) {
+                        select.value = fieldName;
+                        matchFound = true;
+                        updateFieldSelection(select);
+                    }
+                });
+            });
+            
+            // Update available options after auto-matching
+            updateAvailableOptions();
+        }
+        
+        function updateAvailableOptions() {
+            // Get all currently selected values
+            const selects = document.querySelectorAll('#dynamicMappings select');
+            const selectedValues = Array.from(selects)
+                .map(select => select.value)
+                .filter(value => value); // Remove empty values
+            
+            // For each select, disable options that are already selected in other selects
+            selects.forEach(select => {
+                const currentValue = select.value;
+                
+                // Go through all options
+                Array.from(select.options).forEach(option => {
+                    // Skip the empty option and the currently selected option
+                    if (option.value === '' || option.value === currentValue) {
+                        option.disabled = false;
+                        return;
+                    }
+                    
+                    // Disable the option if it's selected in another dropdown
+                    option.disabled = selectedValues.includes(option.value);
+                });
+            });
+        }
+
+        // Update available headers for custom fields
+        function updateAvailableCsvHeaders(headers) {
+          availableCsvHeaders = headers || [];
+        }
+        
+        // Add dynamic custom fields functionality
+        const allLeadFields = [
+          // {name: "full_name", label: "Full Name"},
+          {name: "first_name", label: "First Name"},
+          {name: "last_name", label: "Last Name"},
+          {name: "email", label: "Email"},
+          {name: "phone", label: "Phone"},
+          {name: "company", label: "Company"},
+          {name: "city", label: "City"},
+          {name: "state", label: "State"},
+          {name: "website", label: "Website"},
+          {name: "linkedin_url", label: "LinkedIn URL"},
+          {name: "industry", label: "Industry"},
+          {name: "revenue", label: "Revenue"},
+          {name: "product_service_category", label: "Product/Service Category"},
+          {name: "business_type", label: "Business Type"},
+          {name: "associated_members", label: "Associated Members"},
+          {name: "employees_range", label: "Employees Range"},
+          {name: "rev_source", label: "Revenue Source"},
+          {name: "year_founded", label: "Year Founded"},
+          {name: "title", label: "Title"},
+          {name: "owner_linkedin", label: "Owner LinkedIn"},
+          {name: "owner_age", label: "Owner Age"},
+          {name: "additional_notes", label: "Notes"},
+          // {name: "score", label: "Score"},
+          // {name: "reasoning", label: "Reasoning"},
+          // {name: "email_customization_1", label: "Email Customization 1"},
+          // {name: "subject_line_1", label: "Subject Line 1"},
+          // {name: "email_customization_2", label: "Email Customization 2"},
+          // {name: "subject_line_2", label: "Subject Line 2"},
+          // {name: "linkedin_customization_1", label: "LinkedIn Customization 1"},
+          // {name: "linkedin_customization_2", label: "LinkedIn Customization 2"},
+          {name: "status", label: "Status"}
+        ];
+        
+        // Keep track of available CSV headers
+        let availableCsvHeaders = [];
+        
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                alert('Please select a file to upload');
+                fileInput.closest('.form-group').classList.add('animate__animated', 'animate__shakeX');
+                setTimeout(() => {
+                    fileInput.closest('.form-group').classList.remove('animate__animated', 'animate__shakeX');
+                }, 1000);
+                return;
+            }
+            
+            // Removed the validation for required fields as requested
+        });
+        
+        // Initialize form on document ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add compatibility inputs
+            addCompatibilityInputs();
+        });
+    </script>
+{% endblock %}
