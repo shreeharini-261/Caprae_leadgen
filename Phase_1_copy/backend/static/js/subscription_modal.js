@@ -1,10 +1,10 @@
-// Initialize Stripe
-const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj');
 
+// Store user's tier from the base template
 document.addEventListener('DOMContentLoaded', function() {
   const userTier = window.userTier || 'free';
   const userRole = window.userRole || 'user';
-
+  
+  // Skip all restrictions for admin users
   if (userRole === 'admin') {
     return;
   }
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     bsModal.show();
   }
 
+  // Export handling for non-admin users
   const exportBtn = document.getElementById('exportBtn');
   if (exportBtn) {
     exportBtn.addEventListener('click', function(e) {
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.selectPlan = async function(planType) {
     try {
-        const response = await fetch('/create-checkout-session', {
+        const response = await fetch('/subscription/create-checkout-session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,6 +58,7 @@ window.selectPlan = async function(planType) {
         }
 
         const { sessionId } = await response.json();
+        const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj');
 
         const { error } = await stripe.redirectToCheckout({
             sessionId: sessionId
