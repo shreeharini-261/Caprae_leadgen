@@ -177,7 +177,7 @@ def stripe_webhook():
 
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header, 'your_webhook_signing_secret'
+            payload, sig_header, current_app.config['STRIPE_WEBHOOK_SECRET']
         )
     except ValueError as e:
         return jsonify({'error': 'Invalid payload'}), 400

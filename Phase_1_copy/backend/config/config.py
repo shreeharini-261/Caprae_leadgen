@@ -12,10 +12,11 @@ class Config:
     STRIPE_PUBLIC_KEY = 'pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj'
     STRIPE_SECRET_KEY = 'sk_test_51RNp9cFS9KhotLbM7Qfe3wOjhR0gWezVAbsFhmrxpRibj8QqtVBqvXWFNagq1uz5luTEuIi5nxdcOIkMaz6xHLrt00MUplXF0x'
     STRIPE_PRICES = {
-        'gold': 'price_1ROgtyFS9KhotLbMMuhSgaS7',
+        'bronze': 'price_1ROgvdFS9KhotLbMuOGezRqB',
         'silver': 'price_1ROgv1FS9KhotLbMCvpnsehu',
-        'bronze': 'price_1ROgvdFS9KhotLbMuOGezRqB'
+        'gold': 'price_1ROgtyFS9KhotLbMMuhSgaS7'
     }
+    STRIPE_WEBHOOK_SECRET = ''  # Get this from your Stripe Dashboard
 
 class DevelopmentConfig(Config):
     """Development config"""
@@ -26,4 +27,4 @@ class ProductionConfig(Config):
     DEBUG = False
 
 # Use development config by default
-config = DevelopmentConfig 
+config = DevelopmentConfig
