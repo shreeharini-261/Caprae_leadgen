@@ -531,7 +531,8 @@
     </script>
     {% block scripts %}{% endblock %}
 {% include 'components/subscription_modal.html' %}
-    <script src="{{ url_for('static', filename='js/subscription_modal.js') }}"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+<script src="{{ url_for('static', filename='js/subscription_modal.js') }}"></script>
     <script>
         window.userTier = '{{ current_user.subscription_tier if current_user.is_authenticated else "free" }}';
         window.userRole = '{{ current_user.role }}';

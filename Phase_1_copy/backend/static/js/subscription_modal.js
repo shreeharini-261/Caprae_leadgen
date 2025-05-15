@@ -1,4 +1,6 @@
 
+const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj');
+
 // Store user's tier from the base template
 document.addEventListener('DOMContentLoaded', function() {
   const userTier = window.userTier || 'free';
