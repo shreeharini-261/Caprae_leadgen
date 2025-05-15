@@ -143,3 +143,52 @@ def delete_user():
         flash(f'Error deleting user: {str(e)}', 'danger')
     
     return redirect(url_for('auth.manage_users')) 
+import stripe
+from flask import request, jsonify
+
+stripe.api_key = 'sk_test_51RNp9cFS9KhotLbM7Qfe3wOjhR0gWezVAbsFhmrxpRibj8QqtVBqvXWFNagq1uz5luTEuIi5nxdcOIkMaz6xHLrt00MUplXF0x'
+
+@auth_bp.route('/webhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+    sig_header = request.headers.get('Stripe-Signature')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, 'your_webhook_secret'
+        )
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except stripe.error.SignatureVerificationError as e:
+        return jsonify({'error': str(e)}), 400
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # Handle successful payment
+        customer_email = session['customer_details']['email']
+        # Update user subscription status here
+
+    return jsonify({'status': 'success'})
+
+@auth_bp.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        prices = {
+            'bronze': 'price_H5ggYwtDq4fbrJ',  # Replace with your price IDs
+            'silver': 'price_H5ggYwtDq4fbrK',
+            'gold': 'price_H5ggYwtDq4fbrL'
+        }
+        
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[{
+                'price': prices[request.json['plan_type']],
+                'quantity': 1,
+            }],
+            mode='subscription',
+            success_url='http://localhost:5000/success',
+            cancel_url='http://localhost:5000/cancel',
+        )
+        return jsonify({'sessionId': checkout_session.id})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 403
