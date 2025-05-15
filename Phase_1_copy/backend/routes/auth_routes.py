@@ -223,21 +223,26 @@ def payment_cancel():
     return render_template('auth/payment_cancel.html')
 
 def handle_successful_payment(session):
-    # Update user subscription status based on the payment
     try:
         user_id = session.get('client_reference_id')
-        subscription = session.get('subscription')
-        if user_id and subscription:
+        if user_id:
             user = User.query.get(user_id)
             if user:
-                subscription_data = stripe.Subscription.retrieve(subscription)
-                price_id = subscription_data['items']['data'][0]['price']['id']
-                
-                # Map price_id to tier
-                tier_mapping = {v: k for k, v in current_app.config['STRIPE_PRICES'].items()}
-                new_tier = tier_mapping.get(price_id, 'free')
-                
-                user.subscription_tier = new_tier
-                db.session.commit()
+                # Map the line items to subscription tier
+                line_items = stripe.checkout.Session.list_line_items(session.id)
+                if line_items and line_items.data:
+                    price_id = line_items.data[0].price.id
+                    
+                    # Map price_id to tier
+                    price_to_tier = {
+                        'price_1ROgvdFS9KhotLbMuOGezRqB': 'bronze',
+                        'price_1ROgv1FS9KhotLbMCvpnsehu': 'silver',
+                        'price_1ROgtyFS9KhotLbMMuhSgaS7': 'gold'
+                    }
+                    new_tier = price_to_tier.get(price_id, 'free')
+                    
+                    user.subscription_tier = new_tier
+                    db.session.commit()
+                    print(f"Updated user {user_id} to tier {new_tier}")
     except Exception as e:
         print(f"Error handling payment: {str(e)}")
