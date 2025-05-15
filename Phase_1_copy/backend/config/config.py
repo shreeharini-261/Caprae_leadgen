@@ -9,6 +9,13 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    STRIPE_PUBLIC_KEY = 'pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj'
+    STRIPE_SECRET_KEY = 'sk_test_51RNp9cFS9KhotLbM7Qfe3wOjhR0gWezVAbsFhmrxpRibj8QqtVBqvXWFNagq1uz5luTEuIi5nxdcOIkMaz6xHLrt00MUplXF0x'
+    STRIPE_PRICES = {
+        'gold': 'price_1ROgtyFS9KhotLbMMuhSgaS7',
+        'silver': 'price_1ROgv1FS9KhotLbMCvpnsehu',
+        'bronze': 'price_1ROgvdFS9KhotLbMuOGezRqB'
+    }
 
 class DevelopmentConfig(Config):
     """Development config"""

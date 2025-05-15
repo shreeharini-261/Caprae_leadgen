@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-success">
+        <h4>Payment Successful!</h4>
+        <p>Your subscription has been activated. You can now access all features of your plan.</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">Return to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

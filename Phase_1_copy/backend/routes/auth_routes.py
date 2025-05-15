@@ -1,6 +1,7 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify, current_app
 from controllers.auth_controller import AuthController
 from flask_login import login_required, current_user
+import stripe
 from utils.decorators import role_required
 from models.user_model import User, db
 
@@ -143,3 +144,78 @@ def delete_user():
         flash(f'Error deleting user: {str(e)}', 'danger')
     
     return redirect(url_for('auth.manage_users')) 
+@auth_bp.route('/create-checkout-session', methods=['POST'])
+@login_required
+def create_checkout_session():
+    try:
+        plan_type = request.json.get('plan_type')
+        price_id = current_app.config['STRIPE_PRICES'].get(plan_type)
+        
+        if not price_id:
+            return jsonify({'error': 'Invalid plan type'}), 400
+
+        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[{
+                'price': price_id,
+                'quantity': 1,
+            }],
+            mode='subscription',
+            success_url=request.host_url + 'payment/success',
+            cancel_url=request.host_url + 'payment/cancel',
+            client_reference_id=str(current_user.id)
+        )
+        return jsonify({'sessionId': checkout_session.id})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@auth_bp.route('/webhook', methods=['POST'])
+def stripe_webhook():
+    payload = request.get_data()
+    sig_header = request.headers.get('stripe-signature')
+    stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, 'your_webhook_signing_secret'
+        )
+    except ValueError as e:
+        return jsonify({'error': 'Invalid payload'}), 400
+    except stripe.error.SignatureVerificationError as e:
+        return jsonify({'error': 'Invalid signature'}), 400
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        handle_successful_payment(session)
+
+    return jsonify({'status': 'success'})
+
+@auth_bp.route('/payment/success')
+@login_required
+def payment_success():
+    return render_template('auth/payment_success.html')
+
+@auth_bp.route('/payment/cancel')
+@login_required
+def payment_cancel():
+    return render_template('auth/payment_cancel.html')
+
+def handle_successful_payment(session):
+    # Update user subscription status based on the payment
+    try:
+        user_id = session.get('client_reference_id')
+        subscription = session.get('subscription')
+        if user_id and subscription:
+            user = User.query.get(user_id)
+            if user:
+                subscription_data = stripe.Subscription.retrieve(subscription)
+                price_id = subscription_data['items']['data'][0]['price']['id']
+                
+                # Map price_id to tier
+                tier_mapping = {v: k for k, v in current_app.config['STRIPE_PRICES'].items()}
+                new_tier = tier_mapping.get(price_id, 'free')
+                
+                user.subscription_tier = new_tier
+                db.session.commit()
+    except Exception as e:
+        print(f"Error handling payment: {str(e)}")

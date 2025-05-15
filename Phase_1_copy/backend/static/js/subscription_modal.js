@@ -41,9 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj');
+
 window.selectPlan = async function(planType) {
     try {
-        const response = await fetch('/subscription/create-checkout-session', {
+        const response = await fetch('/create-checkout-session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
