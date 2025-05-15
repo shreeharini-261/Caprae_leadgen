@@ -16,7 +16,7 @@ class Config:
         'silver': 'price_1ROgv1FS9KhotLbMCvpnsehu',
         'gold': 'price_1ROgtyFS9KhotLbMMuhSgaS7'
     }
-    STRIPE_WEBHOOK_SECRET = ''  # Get this from your Stripe Dashboard
+    STRIPE_WEBHOOK_SECRET = 'whsec_rzeSuH4PbfYqi84rwmgFZACS5q4y8Jhf'  
 
 class DevelopmentConfig(Config):
     """Development config"""
