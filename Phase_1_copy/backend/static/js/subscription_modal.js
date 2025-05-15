@@ -1,5 +1,9 @@
-// Initialize Stripe
-const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj');
+// Initialize Stripe with additional security options
+const stripe = Stripe('pk_test_51RNp9cFS9KhotLbMiJM95rAjhuxjTwgjPpRLObOd1ghpwZHwZHOLDIVuxbp4wfXCJBHSLtZhoL99CdaTpOpWAY1L00GcymT5Xj', {
+  stripeAccount: undefined,
+  betas: ['checkout_beta_4'],
+  apiVersion: '2020-08-27'
+});
 
 // Store user's tier from the base template
 document.addEventListener('DOMContentLoaded', function() {

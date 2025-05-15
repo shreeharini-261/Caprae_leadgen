@@ -155,15 +155,19 @@ def create_checkout_session():
             return jsonify({'error': 'Invalid plan type'}), 400
 
         stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        success_url = request.host_url.replace('http://', 'https://') + 'payment/success'
+        cancel_url = request.host_url.replace('http://', 'https://') + 'payment/cancel'
+        
         checkout_session = stripe.checkout.Session.create(
             line_items=[{
                 'price': price_id,
                 'quantity': 1,
             }],
             mode='subscription',
-            success_url=request.host_url + 'payment/success',
-            cancel_url=request.host_url + 'payment/cancel',
-            client_reference_id=str(current_user.id)
+            success_url=success_url,
+            cancel_url=cancel_url,
+            client_reference_id=str(current_user.id),
+            payment_method_types=['card']
         )
         return jsonify({'sessionId': checkout_session.id})
     except Exception as e:
