@@ -183,14 +183,32 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, current_app.config['STRIPE_WEBHOOK_SECRET']
         )
+        print(f"Webhook received: {event['type']}")
+        
+        if event['type'] == 'checkout.session.completed':
+            session = event['data']['object']
+            print(f"Payment successful for user {session.get('client_reference_id')}")
+            handle_successful_payment(session)
+        elif event['type'] == 'checkout.session.async_payment_failed':
+            session = event['data']['object']
+            print(f"Payment failed for user {session.get('client_reference_id')}")
+            # Handle failed payment
+            user_id = session.get('client_reference_id')
+            if user_id:
+                user = User.query.get(user_id)
+                if user:
+                    user.subscription_tier = 'free'
+                    db.session.commit()
+                    
     except ValueError as e:
+        print(f"Webhook error: Invalid payload - {str(e)}")
         return jsonify({'error': 'Invalid payload'}), 400
     except stripe.error.SignatureVerificationError as e:
+        print(f"Webhook error: Invalid signature - {str(e)}")
         return jsonify({'error': 'Invalid signature'}), 400
-
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        handle_successful_payment(session)
+    except Exception as e:
+        print(f"Webhook error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
 
     return jsonify({'status': 'success'})
 
