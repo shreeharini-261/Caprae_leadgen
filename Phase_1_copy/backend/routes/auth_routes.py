@@ -222,6 +222,36 @@ def payment_success():
 def payment_cancel():
     return render_template('auth/payment_cancel.html')
 
+@auth_bp.route('/manage_subscriptions')
+@login_required
+@role_required('admin')
+def manage_subscriptions():
+    """Manage user subscriptions - Admin only"""
+    users = User.query.all()
+    return render_template('auth/manage_subscriptions.html', users=users)
+
+@auth_bp.route('/update_subscription', methods=['POST'])
+@login_required
+@role_required('admin')
+def update_subscription():
+    """Update user subscription tier - Admin only"""
+    user_id = request.form.get('user_id')
+    subscription_tier = request.form.get('subscription_tier')
+    
+    try:
+        user = User.query.get(user_id)
+        if user:
+            user.subscription_tier = subscription_tier
+            db.session.commit()
+            flash(f'Subscription updated for {user.username} to {subscription_tier}', 'success')
+        else:
+            flash('User not found', 'danger')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error updating subscription: {str(e)}', 'danger')
+    
+    return redirect(url_for('auth.manage_subscriptions'))
+
 def handle_successful_payment(session):
     try:
         user_id = session.get('client_reference_id')

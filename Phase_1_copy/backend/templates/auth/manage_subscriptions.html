@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+
+{% block title %}Manage Subscriptions - LeadGen{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Manage User Subscriptions</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Current Plan</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><span class="badge bg-{{ 'primary' if user.subscription_tier != 'free' else 'secondary' }}">{{ user.subscription_tier }}</span></td>
+                    <td>
+                        <form method="POST" action="{{ url_for('auth.update_subscription') }}" class="d-inline">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <select name="subscription_tier" class="form-select d-inline-block w-auto">
+                                <option value="free" {% if user.subscription_tier == 'free' %}selected{% endif %}>Free</option>
+                                <option value="bronze" {% if user.subscription_tier == 'bronze' %}selected{% endif %}>Bronze</option>
+                                <option value="silver" {% if user.subscription_tier == 'silver' %}selected{% endif %}>Silver</option>
+                                <option value="gold" {% if user.subscription_tier == 'gold' %}selected{% endif %}>Gold</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
