@@ -265,9 +265,9 @@ def handle_successful_payment(session):
                     
                     # Map price_id to tier
                     price_to_tier = {
-                        'price_1ROgvdFS9KhotLbMuOGezRqB': 'bronze',
+                        'price_1ROgvdFS9KhotLbMuOGezRqB': 'gold',
                         'price_1ROgv1FS9KhotLbMCvpnsehu': 'silver',
-                        'price_1ROgtyFS9KhotLbMMuhSgaS7': 'gold'
+                        'price_1ROgtyFS9KhotLbMMuhSgaS7': 'bronze'
                     }
                     new_tier = price_to_tier.get(price_id, 'free')
                     
