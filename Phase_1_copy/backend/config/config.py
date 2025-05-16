@@ -17,7 +17,7 @@ class Config:
         'silver': 'price_1ROgv1FS9KhotLbMCvpnsehu',
         'gold': 'price_1ROgvdFS9KhotLbMuOGezRqB'
     }
-    STRIPE_WEBHOOK_SECRET = 'whsec_00f65bc86d2ccc3405fbc48781fce4b4e47ec4cfc3a1138b6bff4791e4be5e96'
+    STRIPE_WEBHOOK_SECRET = 'whsec_rzeSuH4PbfYqi84rwmgFZACS5q4y8Jhf'
 
 
 class DevelopmentConfig(Config):
