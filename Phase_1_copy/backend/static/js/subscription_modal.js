@@ -72,6 +72,11 @@ window.selectPlan = async function(planType) {
 
         if (result.error) {
             alert('Payment failed: ' + result.error.message);
+        } else {
+            // Wait briefly then refresh the page to update UI
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }
     } catch (error) {
         console.error('Error:', error);

@@ -187,18 +187,42 @@ def stripe_webhook():
         
         if event['type'] == 'checkout.session.completed':
             session = event['data']['object']
-            print(f"Payment successful for user {session.get('client_reference_id')}")
-            handle_successful_payment(session)
+            user_id = session.get('client_reference_id')
+            print(f"Payment successful for user {user_id}")
+            
+            # Immediately retrieve subscription details
+            line_items = stripe.checkout.Session.list_line_items(session.id, limit=1)
+            if line_items and line_items.data:
+                price_id = line_items.data[0].price.id
+                
+                # Map price IDs to subscription tiers
+                price_mapping = {
+                    current_app.config['STRIPE_PRICES']['gold']: 'gold',
+                    current_app.config['STRIPE_PRICES']['silver']: 'silver',
+                    current_app.config['STRIPE_PRICES']['bronze']: 'bronze'
+                }
+                
+                new_tier = price_mapping.get(price_id)
+                if new_tier and user_id:
+                    user = User.query.get(int(user_id))
+                    if user:
+                        user.subscription_tier = new_tier
+                        db.session.commit()
+                        print(f"Updated user {user_id} subscription to {new_tier}")
+                    else:
+                        print(f"User {user_id} not found")
+                else:
+                    print(f"Invalid price_id {price_id} or missing user_id")
+            
         elif event['type'] == 'checkout.session.async_payment_failed':
             session = event['data']['object']
-            print(f"Payment failed for user {session.get('client_reference_id')}")
-            # Handle failed payment
             user_id = session.get('client_reference_id')
             if user_id:
-                user = User.query.get(user_id)
+                user = User.query.get(int(user_id))
                 if user:
                     user.subscription_tier = 'free'
                     db.session.commit()
+                    print(f"Reset user {user_id} to free tier due to payment failure")
                     
     except ValueError as e:
         print(f"Webhook error: Invalid payload - {str(e)}")
