@@ -15,7 +15,7 @@ class Config:
     STRIPE_PRICES = {
         'bronze': 'price_1ROgtyFS9KhotLbMMuhSgaS7',
         'silver': 'price_1ROgv1FS9KhotLbMCvpnsehu',
-        'gold': 'price_1ROgvdFS9KhotLbMuOGezRqB'
+        'gold': 'price_1RPyAYFS9KhotLbMGMRPPcbH'
     }
     STRIPE_WEBHOOK_SECRET = 'whsec_00f65bc86d2ccc3405fbc48781fce4b4e47ec4cfc3a1138b6bff4791e4be5e96'
 
