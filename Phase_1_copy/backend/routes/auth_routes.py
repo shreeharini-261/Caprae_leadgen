@@ -255,24 +255,39 @@ def update_subscription():
 def handle_successful_payment(session):
     try:
         user_id = session.get('client_reference_id')
-        if user_id:
-            user = User.query.get(user_id)
-            if user:
-                # Map the line items to subscription tier
-                line_items = stripe.checkout.Session.list_line_items(session.id)
-                if line_items and line_items.data:
-                    price_id = line_items.data[0].price.id
-                    
-                    # Map price_id to tier
-                    price_to_tier = {
-                        'price_1ROgvdFS9KhotLbMuOGezRqB': 'gold',
-                        'price_1ROgv1FS9KhotLbMCvpnsehu': 'silver',
-                        'price_1ROgtyFS9KhotLbMMuhSgaS7': 'bronze'
-                    }
-                    new_tier = price_to_tier.get(price_id, 'free')
-                    
-                    user.subscription_tier = new_tier
-                    db.session.commit()
-                    print(f"Updated user {user_id} to tier {new_tier}")
+        if not user_id:
+            print("No user_id found in session")
+            return
+            
+        user = User.query.get(int(user_id))
+        if not user:
+            print(f"User {user_id} not found")
+            return
+
+        # Get line items and extract price ID
+        line_items = stripe.checkout.Session.list_line_items(session.id)
+        if not line_items or not line_items.data:
+            print("No line items found")
+            return
+            
+        price_id = line_items.data[0].price.id
+        
+        # Map price_id to subscription tier
+        price_to_tier = {
+            current_app.config['STRIPE_PRICES']['gold']: 'gold',
+            current_app.config['STRIPE_PRICES']['silver']: 'silver',
+            current_app.config['STRIPE_PRICES']['bronze']: 'bronze'
+        }
+        
+        new_tier = price_to_tier.get(price_id)
+        if not new_tier:
+            print(f"Invalid price_id: {price_id}")
+            return
+            
+        user.subscription_tier = new_tier
+        db.session.commit()
+        print(f"Successfully updated user {user_id} to tier {new_tier}")
+        
     except Exception as e:
         print(f"Error handling payment: {str(e)}")
+        db.session.rollback()
