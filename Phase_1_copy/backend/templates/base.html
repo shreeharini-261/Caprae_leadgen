@@ -537,9 +537,41 @@
 {% include 'components/subscription_modal.html' %}
     <script src="https://js.stripe.com/v3/"></script>
 <script src="{{ url_for('static', filename='js/subscription_modal.js') }}"></script>
+    <style>
+        .subscription-badge {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background: #4361ee;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+    
+    <div id="subscriptionBadge" class="subscription-badge"></div>
+    
     <script>
         window.userTier = '{{ current_user.subscription_tier if current_user.is_authenticated else "free" }}';
         window.userRole = '{{ current_user.role }}';
+        
+        // Show subscription notification
+        document.addEventListener('DOMContentLoaded', function() {
+            const tier = window.userTier;
+            if (tier && tier !== 'free') {
+                const badge = document.getElementById('subscriptionBadge');
+                badge.textContent = `Welcome ${tier.charAt(0).toUpperCase() + tier.slice(1)} Tier User!`;
+                badge.style.display = 'block';
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    badge.style.display = 'none';
+                }, 5000);
+            }
+        });
     </script>
 </body>
 </html>

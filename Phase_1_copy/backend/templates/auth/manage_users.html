@@ -279,6 +279,7 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Company</th>
+                    <th>Subscription</th>
                     <th>Created</th>
                     <th>Actions</th>
                 </tr>
@@ -290,6 +291,7 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.company or '-' }}</td>
+                    <td><span class="role-badge {{ user.subscription_tier }}">{{ user.subscription_tier }}</span></td>
                     <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
                     <td class="actions-cell">
                         <button class="btn-user btn-edit-role" onclick="openEditModal('{{ user.id }}', '{{ user.username }}', '{{ user.role }}')">
