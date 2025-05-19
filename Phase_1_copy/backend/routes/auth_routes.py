@@ -154,11 +154,9 @@ def create_checkout_session():
         if not price_id:
             return jsonify({'error': 'Invalid plan type'}), 400
 
-        try:
-            stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
-            base_url = 'https://0931-2401-4900-88e4-e2b2-2825-95d5-b06f-7d9c.ngrok-free.app'
-            success_url = f"{base_url}/payment/success"
-            cancel_url = f"{base_url}/payment/cancel"
+        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        success_url = request.host_url.replace('http://', 'https://') + 'payment/success'
+        cancel_url = request.host_url.replace('http://', 'https://') + 'payment/cancel'
         
         checkout_session = stripe.checkout.Session.create(
             line_items=[{
