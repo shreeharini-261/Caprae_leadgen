@@ -1,5 +1,7 @@
-### 1. First, modify your app.py to expose the webhook at the root level
+The webhook endpoint is updated to handle subscription-related events properly, including checkout completion, subscription creation, and invoice payment success, also updating subscription status in database.
+```
 
+```python
 from flask import Flask, has_request_context, g, request, jsonify
 from models.lead_model import db
 from routes.lead_routes import lead_bp
@@ -78,28 +80,35 @@ def create_app(config_class=config):
             print(f"Processing webhook with secret: {webhook_secret[:4]}...")
 
             event = stripe.Webhook.construct_event(payload, sig_header,
-                                                   webhook_secret)
+                                               webhook_secret)
             print(f"Webhook validated! Event type: {event['type']}")
 
-            # Handle the checkout.session.completed event
+            # Handle various subscription-related events
             if event['type'] == 'checkout.session.completed':
                 session = event['data']['object']
-                user_id = session.get('client_reference_id')
-                print(f"Payment successful for user {user_id}")
+                if session.get('mode') == 'subscription':
+                    print("Processing subscription checkout...")
+                    handle_successful_payment(session)
 
-                # Process the subscription update
-                handle_successful_payment(session)
+            elif event['type'] == 'customer.subscription.created':
+                subscription = event['data']['object']
+                customer_id = subscription.get('customer')
+                print(f"New subscription created for customer {customer_id}")
 
             elif event['type'] == 'invoice.payment_succeeded':
                 invoice = event['data']['object']
-                subscription_id = invoice.get('subscription')
                 customer_id = invoice.get('customer')
-                print(
-                    f"Subscription payment succeeded for subscription {subscription_id}, customer {customer_id}"
-                )
+                subscription_id = invoice.get('subscription')
+                print(f"Subscription payment succeeded for sub {subscription_id}")
 
-                # Process the subscription payment - can extend subscription
-                # You might want to add logic here to extend subscription periods
+                # Update subscription status
+                if subscription_id:
+                    subscription = stripe.Subscription.retrieve(subscription_id)
+                    customer = stripe.Customer.retrieve(customer_id)
+                    user = User.query.filter_by(stripe_customer_id=customer_id).first()
+                    if user:
+                        user.subscription_status = subscription.status
+                        db.session.commit()
 
         except ValueError as e:
             print(f"Webhook error: Invalid payload - {str(e)}")
@@ -169,3 +178,4 @@ app = create_app()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
+`
