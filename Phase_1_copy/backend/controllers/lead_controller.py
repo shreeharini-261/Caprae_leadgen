@@ -17,15 +17,23 @@ class LeadController:
         # Get user's subscription tier, default to 'free'
         tier = getattr(user, 'subscription_tier', 'free')
         
-        # Apply tier-based limitations
+        # Get leads based on tier limits
         if tier == 'free':
-            return query.limit(10).all()  # Free users see only 10 leads
+            leads = query.limit(10).all()  # Free users see only 10 leads
         elif tier == 'bronze':
-            return query.limit(50).all()  # Bronze users see up to 50 leads
+            leads = query.limit(50).all()  # Bronze users see up to 50 leads
         elif tier == 'silver':
-            return query.limit(100).all()  # Silver users see up to 100 leads
+            leads = query.limit(100).all()  # Silver users see up to 100 leads
         else:  # gold tier
-            return query.all()  # Gold users see all leads
+            leads = query.all()  # Gold users see all leads
+
+        # Mask phone numbers for free and bronze users
+        if tier in ['free', 'bronze']:
+            for lead in leads:
+                if lead.phone:
+                    lead.phone = '***-***-****'
+                    
+        return leads
             
     @staticmethod
     def can_access_feature(user, feature):

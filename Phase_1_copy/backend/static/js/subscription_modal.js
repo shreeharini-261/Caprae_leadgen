@@ -47,6 +47,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Prevent using filters for free users
+    const filterInputs = document.querySelectorAll('.filter-select, .filter-input, #searchInput');
+    if (userTier === 'free') {
+        filterInputs.forEach(input => {
+            input.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                showSubscriptionModal('Filtering requires a paid plan');
+                return false;
+            });
+            input.disabled = true;
+        });
+    }
+
     // Export handling
     const exportBtn = document.getElementById('exportBtn');
     if (exportBtn) {
