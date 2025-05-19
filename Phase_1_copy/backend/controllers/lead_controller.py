@@ -26,6 +26,24 @@ class LeadController:
             return query.limit(100).all()  # Silver users see up to 100 leads
         else:  # gold tier
             return query.all()  # Gold users see all leads
+            
+    @staticmethod
+    def can_access_feature(user, feature):
+        """Check if user can access a specific feature"""
+        if not user or user.is_admin():
+            return True
+            
+        tier = getattr(user, 'subscription_tier', 'free')
+        
+        # Define feature access by tier
+        access_map = {
+            'free': ['basic_filters'],
+            'bronze': ['basic_filters', 'advanced_filters', 'export_csv'],
+            'silver': ['basic_filters', 'advanced_filters', 'export_csv', 'phone_numbers'],
+            'gold': ['basic_filters', 'advanced_filters', 'export_csv', 'phone_numbers', 'api_access', 'priority_support']
+        }
+        
+        return feature in access_map.get(tier, [])
 
     @staticmethod
     def get_lead_by_id(lead_id):
