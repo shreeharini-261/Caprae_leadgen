@@ -9,7 +9,7 @@
         max-width: 1100px;
         margin: 0 auto;
     }
-    
+
     .user-card {
         background: white;
         border-radius: 8px;
@@ -17,7 +17,7 @@
         padding: 20px;
         margin-bottom: 30px;
     }
-    
+
     .section-heading {
         font-size: 18px;
         font-weight: 600;
@@ -26,12 +26,12 @@
         padding-bottom: 10px;
         border-bottom: 2px solid #e9ecef;
     }
-    
+
     .user-table {
         width: 100%;
         border-collapse: collapse;
     }
-    
+
     .user-table th {
         text-align: left;
         padding: 12px 20px;
@@ -39,20 +39,20 @@
         color: #4361ee;
         font-weight: 600;
     }
-    
+
     .user-table td {
         padding: 12px 20px;
         border-bottom: 1px solid #e9ecef;
     }
-    
+
     .user-table tr:last-child td {
         border-bottom: none;
     }
-    
+
     .user-table tr:hover {
         background-color: #f8f9fa;
     }
-    
+
     .role-badge {
         display: inline-block;
         padding: 4px 8px;
@@ -60,27 +60,27 @@
         font-size: 12px;
         font-weight: 500;
     }
-    
+
     .role-badge.admin {
         background-color: #4cc9f0;
         color: #fff;
     }
-    
+
     .role-badge.developer {
         background-color: #4361ee;
         color: #fff;
     }
-    
+
     .role-badge.user {
         background-color: #e9ecef;
         color: #212529;
     }
-    
+
     .actions-cell {
         display: flex;
         gap: 10px;
     }
-    
+
     .btn-user {
         padding: 6px 12px;
         border-radius: 4px;
@@ -93,25 +93,25 @@
         gap: 4px;
         transition: all 0.2s;
     }
-    
+
     .btn-edit-role {
         background-color: #4361ee;
         color: white;
     }
-    
+
     .btn-edit-role:hover {
         background-color: #3f37c9;
     }
-    
+
     .btn-delete-user {
         background-color: #f72585;
         color: white;
     }
-    
+
     .btn-delete-user:hover {
         background-color: #dc1f6f;
     }
-    
+
     .modal {
         display: none;
         position: fixed;
@@ -123,7 +123,7 @@
         overflow: auto;
         background-color: rgba(0,0,0,0.4);
     }
-    
+
     .modal-content {
         background-color: #fefefe;
         margin: 15% auto;
@@ -132,28 +132,28 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         width: 400px;
     }
-    
+
     .modal-header {
         margin-bottom: 20px;
     }
-    
+
     .modal-title {
         font-size: 18px;
         font-weight: 600;
         color: #212529;
         margin: 0;
     }
-    
+
     .modal-body {
         margin-bottom: 20px;
     }
-    
+
     .modal-footer {
         display: flex;
         justify-content: flex-end;
         gap: 10px;
     }
-    
+
     .close {
         float: right;
         color: #aaa;
@@ -161,15 +161,15 @@
         font-weight: bold;
         cursor: pointer;
     }
-    
+
     .close:hover {
         color: black;
     }
-    
+
     .form-group {
         margin-bottom: 20px;
     }
-    
+
     .form-label {
         display: block;
         margin-bottom: 8px;
@@ -177,7 +177,7 @@
         font-weight: 500;
         color: #212529;
     }
-    
+
     .form-select {
         width: 100%;
         padding: 10px;
@@ -191,7 +191,7 @@
 {% block content %}
 <div class="user-management-container">
     <h1>Manage Users</h1>
-    
+
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
         <div>
             <p>Manage system users and their permissions</p>
@@ -204,7 +204,7 @@
             Create New User
         </a>
     </div>
-    
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="alert-container">
@@ -214,7 +214,7 @@
             </div>
         {% endif %}
     {% endwith %}
-    
+
     <!-- Admin and Developer Users -->
     <div class="user-card">
         <h2 class="section-heading">Administrators & Developers</h2>
@@ -250,7 +250,7 @@
                             </svg>
                             Edit Role
                         </button>
-                        
+
                         {% if user.id != current_user.id %}
                         <button class="btn-user btn-delete-user" onclick="if(confirm('Are you sure you want to delete user {{ user.username }}?')) { deleteUser('{{ user.id }}') }">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -269,7 +269,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <!-- Regular Users -->
     <div class="user-card">
         <h2 class="section-heading">Regular Users</h2>
@@ -299,7 +299,7 @@
                             </svg>
                             Edit Role
                         </button>
-                        
+
                         <button class="btn-user btn-delete-user" onclick="if(confirm('Are you sure you want to delete user {{ user.username }}?')) { deleteUser('{{ user.id }}') }">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -316,7 +316,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <!-- Edit Role Modal -->
     <div id="editRoleModal" class="modal">
         <div class="modal-content">
@@ -327,12 +327,12 @@
             <div class="modal-body">
                 <form method="POST" action="{{ url_for('auth.update_user_role') }}">
                     <input type="hidden" id="user_id" name="user_id">
-                    
+
                     <div class="form-group">
                         <label class="form-label" for="username">Username</label>
                         <input type="text" id="username" class="form-select" disabled>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label" for="role">Role</label>
                         <select id="role" name="role" class="form-select">
@@ -341,7 +341,7 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="btn-user" onclick="closeEditModal()">Cancel</button>
                         <button type="submit" class="btn-user btn-edit-role">Save Changes</button>
@@ -355,28 +355,28 @@
 <script>
     // Edit Role Modal
     const editModal = document.getElementById('editRoleModal');
-    
+
     function openEditModal(userId, username, role) {
         document.getElementById('user_id').value = userId;
         document.getElementById('username').value = username;
         document.getElementById('role').value = role;
         editModal.style.display = 'block';
     }
-    
+
     function closeEditModal() {
         editModal.style.display = 'none';
     }
-    
+
     // Close modal when clicking outside of it
     window.onclick = function(event) {
         if (event.target == editModal) {
             closeEditModal();
         }
     }
-    
+
     // Delete User
     function deleteUser(userId) {
         window.location.href = "{{ url_for('auth.delete_user') }}?user_id=" + userId;
     }
 </script>
-{% endblock %} 
+{% endblock %}
